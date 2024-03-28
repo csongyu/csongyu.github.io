@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ClickHouse clickhouse&#x2F;clickhouse-server 1docker run -d -p 8123:8123 -p 9000:9000 -v &#x2F;mnt&#x2F;clickhouse-data:&#x2F;var&#x2F;lib&#x2F;clickhouse&#x2F; -v &#x2F;mnt&#x2F;clickhouse-log:&#x2F;var&#x2F;log&#x2F;clickhouse-server&#x2F; -e CLICKHOUSE_DB&#x3D;smarti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建 Smart Invest 架构">
+<meta property="og:url" content="https://csongyu.github.io/posts/77a7a738.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="ClickHouse clickhouse&#x2F;clickhouse-server 1docker run -d -p 8123:8123 -p 9000:9000 -v &#x2F;mnt&#x2F;clickhouse-data:&#x2F;var&#x2F;lib&#x2F;clickhouse&#x2F; -v &#x2F;mnt&#x2F;clickhouse-log:&#x2F;var&#x2F;log&#x2F;clickhouse-server&#x2F; -e CLICKHOUSE_DB&#x3D;smarti">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-09T15:30:13.180Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/77a7a738.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>搭建 Smart Invest 架构 | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/77a7a738.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          搭建 Smart Invest 架构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-23T00:00:00+08:00">2022-06-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="clickhouse">ClickHouse</h3>
+<p><a
+target="_blank" rel="noopener" href="https://hub.docker.com/r/clickhouse/clickhouse-server">clickhouse/clickhouse-server</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8123:8123 -p 9000:9000 -v /mnt/clickhouse-data:/var/lib/clickhouse/ -v /mnt/clickhouse-log:/var/log/clickhouse-server/ -e CLICKHOUSE_DB=smartinvest -e CLICKHOUSE_USER=smartinvest -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 -e CLICKHOUSE_PASSWORD=smartinvest.123 --name smart-invest-clickhouse-server --<span class="built_in">ulimit</span> nofile=262144:262144 clickhouse/clickhouse-server:22.3-alpine</span><br></pre></td></tr></table></figure>
+<h3 id="python">Python</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf groupinstall -y <span class="string">&#x27;development tools&#x27;</span></span><br><span class="line">sudo dnf install -y bzip2-devel expat-devel gdbm-devel ncurses-devel openssl-devel readline-devel sqlite-devel tk-devel xz-devel zlib-devel wget</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /usr/local/src</span><br><span class="line">wget https://www.python.org/ftp/python/3.8.13/Python-3.8.13.tgz</span><br><span class="line">tar -zxvf Python-3.8.13.tgz</span><br><span class="line"></span><br><span class="line"><span class="comment"># ModuleNotFoundError: No module named &#x27;xxx&#x27;</span></span><br><span class="line">yum install -y openssl-devel bzip2-devel libffi-devel</span><br><span class="line"></span><br><span class="line"><span class="comment"># compile</span></span><br><span class="line"><span class="built_in">cd</span> Python-3.8.13/</span><br><span class="line">./configure --prefix=/usr/local/python --with-ssl</span><br><span class="line">./configure --enable-optimizations</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># upgrade pip</span></span><br><span class="line">pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line"><span class="built_in">ln</span> -sf /usr/local/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
+<h3 id="akshare">AKShare</h3>
+<p><a target="_blank" rel="noopener" href="https://aktools.readthedocs.io/">AKTools</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.akshare.xyz/index.html">Welcome to AKShare’s
+Online Documentation!</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install --upgrade setuptools</span><br><span class="line">pip3 install aktools -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com --upgrade</span><br><span class="line"><span class="built_in">nohup</span> python3 -m aktools &gt; nohup.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<h3 id="spring-cloud-data-flow">Spring Cloud Data Flow</h3>
+<p><a
+target="_blank" rel="noopener" href="https://dataflow.spring.io/docs/recipes/batch/batch-only-mode/">Batch-only
+Mode</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.spring.io/spring-cloud-dataflow/docs/2.9.2/reference/htmlsingle/#_mariadb">10.2.2.
+MariaDB</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># download Spring Cloud Data Flow Server</span></span><br><span class="line">wget https://repo.spring.io/release/org/springframework/cloud/spring-cloud-dataflow-server/2.9.2/spring-cloud-dataflow-server-2.9.2.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># setup mariadb</span></span><br><span class="line">docker run -d --name task-db --<span class="built_in">env</span> MARIADB_RANDOM_ROOT_PASSWORD=<span class="string">&quot;1&quot;</span> --<span class="built_in">env</span> MARIADB_DATABASE=task --<span class="built_in">env</span> MARIADB_USER=task --<span class="built_in">env</span> MARIADB_PASSWORD=task.123 -v /mnt/task-db-data:/var/lib/mysql -p 3306:3306 mariadb:10.7</span><br><span class="line"></span><br><span class="line"><span class="comment"># setup jdk &amp; maven</span></span><br><span class="line">yum install -y java-17-openjdk maven</span><br><span class="line">sudo alternatives --config java</span><br><span class="line"></span><br><span class="line"><span class="comment"># setup environment variables</span></span><br><span class="line"><span class="built_in">export</span> SPRING_CLOUD_DATAFLOW_FEATURES_STREAMS_ENABLED=<span class="literal">false</span></span><br><span class="line"><span class="built_in">export</span> SPRING_CLOUD_DATAFLOW_FEATURES_SCHEDULES_ENABLED=<span class="literal">false</span></span><br><span class="line"><span class="built_in">export</span> SPRING_CLOUD_DATAFLOW_FEATURES_TASKS_ENABLED=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># running the server</span></span><br><span class="line"><span class="comment"># http://&lt;ip&gt;:9393/dashboard</span></span><br><span class="line"><span class="built_in">nohup</span> java -jar spring-cloud-dataflow-server-2.9.2.jar \</span><br><span class="line">    --spring.datasource.url=jdbc:mariadb://localhost:3306/task?useMysqlMetadata=<span class="literal">true</span> \</span><br><span class="line">    --spring.datasource.username=task \</span><br><span class="line">    --spring.datasource.password=task.123 \</span><br><span class="line">    --spring.datasource.driver-class-name=org.mariadb.jdbc.Driver \</span><br><span class="line">    --spring.datasource.initialization.mode=always \</span><br><span class="line">    --spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDB102Dialect \</span><br><span class="line">    &gt; ./nohup.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<h3 id="register-and-launch-a-spring-cloud-task-spring-batch">Register
+and Launch a Spring Cloud Task &amp; Spring Batch</h3>
+<p><a
+target="_blank" rel="noopener" href="https://dataflow.spring.io/docs/batch-developer-guides/batch/">Batch
+Development</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/spring-cloud/spring-cloud-task/tree/main/spring-cloud-task-samples/multiple-datasources">Multiple
+DataSources Sample Task</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># build project</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/csongyu/smart-invest.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># install to local maven repository</span></span><br><span class="line">mvn install:install-file -DgroupId=xyz.csongyu -DartifactId=smart-invest-task -Dversion=1.0.0 -Dpackaging=jar -DgeneratePom=<span class="literal">true</span> -Dfile=smart-invest-task-1.0.0.jar</span><br><span class="line">mvn install:install-file -DgroupId=xyz.csongyu -DartifactId=smart-invest-job -Dversion=1.0.0 -Dpackaging=jar -DgeneratePom=<span class="literal">true</span> -Dfile=smart-invest-job-1.0.0.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># fund-name-em</span></span><br><span class="line"><span class="comment"># register applications</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/task-fund-name-em&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-task:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/task-initialize-schema-fund-name-em&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-task:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/job-fund-name-em&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-job:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line"><span class="comment"># create task</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/tasks/definitions&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;name=fne&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;definition=task-fund-name-em &amp;&amp; task-initialize-schema-fund-name-em &amp;&amp; job-fund-name-em&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fund-open-fund-info-em / unit-net-asset-value</span></span><br><span class="line"><span class="comment"># register applications</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/task-fund-open-fund-info-em-unit-net-asset-value&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-task:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/task-initialize-schema-fund-open-fund-info-em-unit-net-asset-value&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-task:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/job-fund-open-fund-info-em-unit-net-asset-value&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-job:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line"><span class="comment"># create task</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/tasks/definitions&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;name=fofiem&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;definition=task-fund-open-fund-info-em-unit-net-asset-value &amp;&amp; task-initialize-schema-fund-open-fund-info-em-unit-net-asset-value &amp;&amp; job-fund-open-fund-info-em-unit-net-asset-value&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fund-open-fund-daily-em</span></span><br><span class="line"><span class="comment"># register applications</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/task-fund-open-fund-daily-em&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-task:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/apps/task/job-fund-open-fund-daily-em&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;uri=maven://xyz.csongyu:smart-invest-job:1.0.0&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;force=true&#x27;</span></span><br><span class="line"><span class="comment"># create task</span></span><br><span class="line">curl --location --request POST <span class="string">&#x27;http://127.0.0.1:9393/tasks/definitions&#x27;</span> \</span><br><span class="line">--header <span class="string">&#x27;Content-Type: application/x-www-form-urlencoded&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;name=fofde&#x27;</span> \</span><br><span class="line">--data-urlencode <span class="string">&#x27;definition=task-fund-open-fund-daily-em &amp;&amp; job-fund-open-fund-daily-em&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="scheduling">Scheduling</h3>
+<p><a
+target="_blank" rel="noopener" href="https://dataflow.spring.io/docs/feature-guides/batch/scheduling/">Batch
+Job Scheduling</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#api-guide-resources-task-executions">Task
+Executions</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.baeldung.com/linux/restrict-size-buffer-cache">Restrict
+Size of the Buffer Cache in Linux</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># restrict buffer/cache</span></span><br><span class="line"><span class="built_in">sync</span></span><br><span class="line"><span class="built_in">echo</span> 3 &gt; /proc/sys/vm/drop_caches</span><br><span class="line"><span class="built_in">echo</span> 500 &gt; /proc/sys/vm/vfs_cache_pressure</span><br><span class="line"></span><br><span class="line"><span class="comment"># build project</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/csongyu/smart-invest.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># launch application</span></span><br><span class="line"><span class="built_in">nohup</span> java -jar smart-invest-scheduler-1.0.0.jar &gt; ./scheduler.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/a0bd7e45.html" rel="prev" title="Create SSL Certificate With OpenSSL">
+      <i class="fa fa-chevron-left"></i> Create SSL Certificate With OpenSSL
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/b9e80287.html" rel="next" title="运行个人 Docker Registry（基础）">
+      运行个人 Docker Registry（基础） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#clickhouse"><span class="nav-number">1.</span> <span class="nav-text">ClickHouse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#akshare"><span class="nav-number">3.</span> <span class="nav-text">AKShare</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-cloud-data-flow"><span class="nav-number">4.</span> <span class="nav-text">Spring Cloud Data Flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#register-and-launch-a-spring-cloud-task-spring-batch"><span class="nav-number">5.</span> <span class="nav-text">Register
+and Launch a Spring Cloud Task &amp; Spring Batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scheduling"><span class="nav-number">6.</span> <span class="nav-text">Scheduling</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

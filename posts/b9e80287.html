@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="安装 Docker Engine  Install Docker Engine on CentOS  12345678910sudo yum install -y yum-utilssudo yum-config-manager \    --add-repo \    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.reposudo yum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运行个人 Docker Registry（基础）">
+<meta property="og:url" content="https://csongyu.github.io/posts/b9e80287.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="安装 Docker Engine  Install Docker Engine on CentOS  12345678910sudo yum install -y yum-utilssudo yum-config-manager \    --add-repo \    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.reposudo yum">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-12T15:15:52.062Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/b9e80287.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>运行个人 Docker Registry（基础） | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/b9e80287.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          运行个人 Docker Registry（基础）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-27 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-27T00:00:00+08:00">2022-06-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="安装-docker-engine">安装 Docker Engine</h3>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/centos/">Install
+Docker Engine on CentOS</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">sudo docker run hello-world</span><br><span class="line"></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker.service</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> containerd.service</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/registry/recipes/mirror/">Registry
+as a pull through cache</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt;<span class="string">EOF &gt; /etc/docker/daemon.json</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;registry-mirrors&quot;: [</span></span><br><span class="line"><span class="string">    &quot;https://mirror.ccs.tencentyun.com&quot;</span></span><br><span class="line"><span class="string">  ]</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker.service</span><br></pre></td></tr></table></figure>
+<h3 id="注册域名">注册域名</h3>
+<h3 id="申请-ssl-证书">申请 SSL 证书</h3>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://freessl.cn/">FreeSSL.cn</a></p>
+</blockquote>
+<h3 id="运行-registry-server">运行 Registry Server</h3>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/registry/deploying/">Deploy a
+registry server</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> auth</span><br><span class="line">docker run \</span><br><span class="line">  --entrypoint htpasswd \</span><br><span class="line">  httpd:2 -Bbn testuser testpassword &gt; auth/htpasswd</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> certs</span><br><span class="line"><span class="comment"># copy domain.crt and domain.key to here</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  -p 5000:5000 \</span><br><span class="line">  --restart=always \</span><br><span class="line">  --name registry-srv \</span><br><span class="line">  -v <span class="string">&quot;<span class="subst">$(pwd)</span>&quot;</span>/auth:/auth \</span><br><span class="line">  -e <span class="string">&quot;REGISTRY_AUTH=htpasswd&quot;</span> \</span><br><span class="line">  -e <span class="string">&quot;REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm&quot;</span> \</span><br><span class="line">  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \</span><br><span class="line">  -v <span class="string">&quot;<span class="subst">$(pwd)</span>&quot;</span>/certs:/certs \</span><br><span class="line">  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \</span><br><span class="line">  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \</span><br><span class="line">  -v /mnt/registry:/var/lib/registry \</span><br><span class="line">  registry:2</span><br></pre></td></tr></table></figure>
+<h3 id="拷贝镜像到-registry-server">拷贝镜像到 Registry Server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要将 &lt;domain&gt; 替换为申请的域名</span></span><br><span class="line">docker pull busybox:latest</span><br><span class="line">docker tag busybox:latest &lt;domain&gt;:5000/busybox:latest</span><br><span class="line">docker login &lt;domain&gt;:5000</span><br><span class="line">docker push &lt;domain&gt;:5000/busybox:latest</span><br><span class="line"><span class="comment"># Registry API</span></span><br><span class="line">curl https://testuser:testpassword@&lt;domain&gt;:5000/v2/busybox/tags/list</span><br></pre></td></tr></table></figure>
+<h3 id="运行-registry-ui">运行 Registry UI</h3>
+<blockquote>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/kwk/docker-registry-frontend">docker-registry-frontend</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name registry-web \</span><br><span class="line">  --<span class="built_in">link</span> registry-srv:registry \</span><br><span class="line">  -e ENV_USE_SSL=<span class="built_in">yes</span> \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_HOST=registry \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_PORT=5000 \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_USE_SSL=1 \</span><br><span class="line">  -v <span class="string">&quot;<span class="subst">$(pwd)</span>&quot;</span>/certs/domain.crt:/etc/apache2/server.crt:ro \</span><br><span class="line">  -v <span class="string">&quot;<span class="subst">$(pwd)</span>&quot;</span>/certs/domain.key:/etc/apache2/server.key:ro \</span><br><span class="line">  -p 8000:443 \</span><br><span class="line">  -p 0:80 \</span><br><span class="line">  konradkleine/docker-registry-frontend:v2</span><br><span class="line"><span class="comment"># https://&lt;domain&gt;:8000/</span></span><br></pre></td></tr></table></figure>
+<h3 id="添加防火墙规则">添加防火墙规则</h3>
+<table>
+<thead>
+<tr class="header">
+<th>来源</th>
+<th>协议</th>
+<th>端口</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.0.0.0/0</td>
+<td>TCP</td>
+<td>5000</td>
+</tr>
+<tr class="even">
+<td>0.0.0.0/0</td>
+<td>TCP</td>
+<td>8000</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/77a7a738.html" rel="prev" title="搭建 Smart Invest 架构">
+      <i class="fa fa-chevron-left"></i> 搭建 Smart Invest 架构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/9b60a954.html" rel="next" title="运行个人 Docker Registry（进阶）">
+      运行个人 Docker Registry（进阶） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-docker-engine"><span class="nav-number">1.</span> <span class="nav-text">安装 Docker Engine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E5%9F%9F%E5%90%8D"><span class="nav-number">2.</span> <span class="nav-text">注册域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7-ssl-%E8%AF%81%E4%B9%A6"><span class="nav-number">3.</span> <span class="nav-text">申请 SSL 证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-registry-server"><span class="nav-number">4.</span> <span class="nav-text">运行 Registry Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E9%95%9C%E5%83%8F%E5%88%B0-registry-server"><span class="nav-number">5.</span> <span class="nav-text">拷贝镜像到 Registry Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-registry-ui"><span class="nav-number">6.</span> <span class="nav-text">运行 Registry UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E9%98%B2%E7%81%AB%E5%A2%99%E8%A7%84%E5%88%99"><span class="nav-number">7.</span> <span class="nav-text">添加防火墙规则</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. What is the docker command to find the current logging driver for a running container? A. docker stats B. docker info C. docker config D. docker inspect 2. When an application being managed by UCP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker Certified Associate Exam Preparation">
+<meta property="og:url" content="https://csongyu.github.io/posts/d95d1ed0.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="1. What is the docker command to find the current logging driver for a running container? A. docker stats B. docker info C. docker config D. docker inspect 2. When an application being managed by UCP">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-16T05:13:58.908Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/d95d1ed0.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Docker Certified Associate Exam Preparation | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/d95d1ed0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker Certified Associate Exam Preparation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-13T00:00:00+08:00">2022-05-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>1. What is the docker command to find the current logging driver for
+a running container?</p>
+<p>A. docker stats</p>
+<p>B. docker info</p>
+<p>C. docker config</p>
+<p><strong>D. docker inspect</strong></p>
+<p>2. When an application being managed by UCP fails, you would like a
+summary of all requests made to the UCP API in the hours leading up to
+the failure.</p>
+<p>What must be configured correctly beforehand for this to be
+possible?</p>
+<p><strong>A. UCP audit logs must be set to the metadata or request
+level.</strong></p>
+<p>B. UCP logging levels must be set to the info or debug level.</p>
+<p>C. All engines in the cluster must have their log driver set to the
+metadata or request level.</p>
+<p>D. Set the logging level in the config object for the
+ucp-kube-api-server container to warning or higher.</p>
+<p><a
+target="_blank" rel="noopener" href="http://man.hubwiz.com/docset/Docker.docset/Contents/Resources/Documents/docs.docker.com/ee/ucp/admin/configure/create-audit-logs.html">Enable
+audit logging on UCP</a></p>
+<p>Audit Logs capture all HTTP actions (GET, PUT, POST, PATCH, DELETE)
+to all UCP API, Swarm API and Kubernetes API endpoints that are invoked
+(except for the ignored list) and sent to Docker Engine via stdout.
+Creating audit logs is a UCP component that integrates with Swarm, K8s,
+and UCP APIs.</p>
+<p><em>Logging Levels</em></p>
+<p>None, Metadata, Request.</p>
+<p><em>Benefits</em></p>
+<p>Historical Troubleshooting - Audit logs are helpful in determining a
+sequence of past events that explain why an issue occured.</p>
+<p>Security Analysis and Auditing - Security is one of the primary uses
+for audit logs. A full record of all user interactions with the
+container infrastructure gives your security team full visibility to
+questionable or attempted unauthorized accesses.</p>
+<p>Chargeback - You can use audit logs and information about the
+resources to generate chargeback information.</p>
+<p>Alerting - If there is a watch on an event stream or a notification
+created by the event, alerting features can be built on top of event
+tools that generate alerts for ops teams (PagerDuty, OpsGenie, Slack, or
+custom solutions).</p>
+<span id="more"></span>
+<p>3. Is this a type of Linux kernel namespace that provides container
+isolation?</p>
+<p>Solution: Network</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Storage</p>
+<p><strong>No</strong></p>
+<p>Solution: Authentication</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/#kernel-namespaces">Kernel
+namespaces</a></p>
+<p>Namespaces provide the first and most straightforward form of
+isolation: processes running within a container cannot see, and even
+less affect, processes running in another container, or in the host
+system.</p>
+<p>Each container also gets its own network stack, meaning that a
+container doesn’t get privileged access to the sockets or interfaces of
+another container. Of course, if the host system is setup accordingly,
+containers can interact with each other through their respective network
+interfaces — just like they can interact with external hosts. When you
+specify public ports for your containers or use <a
+target="_blank" rel="noopener" href="https://docs.docker.com/network/links/"><em>links</em></a> then IP
+traffic is allowed between containers. They can ping each other,
+send/receive UDP packets, and establish TCP connections, but that can be
+restricted if necessary. From a network architecture point of view, all
+containers on a given Docker host are sitting on bridge interfaces. This
+means that they are just like physical machines connected through a
+common Ethernet switch; no more, no less.</p>
+<p>4. The Kubernetes yaml shown below describes a networkPolicy.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">NetworkPolicy</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">dca</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">podSelector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">tire:</span> <span class="string">backend</span></span><br><span class="line">  <span class="attr">policyTypes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Ingress</span></span><br><span class="line">  <span class="attr">ingress:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">from:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">podSelector:</span></span><br><span class="line">            <span class="attr">matchLabels:</span></span><br><span class="line">              <span class="attr">tire:</span> <span class="string">api</span></span><br></pre></td></tr></table></figure>
+<p>Will the networkPolicy BLOCK this traffic?</p>
+<p>Solution: a request issued from a pod bearing the tier: backend
+label, to a pod bearing the tier: frontend label.</p>
+<p><strong>No</strong></p>
+<p>Solution: a request issued from a pod lacking the tier: api label, to
+a pod bearing the tier: backend label</p>
+<p><strong>Yes</strong></p>
+<p>5. Does this command display all the pods in the cluster that are
+labeled as "env: development"?</p>
+<p>Solution: "kubectl get pods --all-namespaces -I env=development"</p>
+<p><strong>Yes</strong></p>
+<p>Solution: "kubectl get pods -I env=development"</p>
+<p><strong>No</strong></p>
+<p>Solution: "kubectl get pods --all-namespaces -label
+env=development"</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#list-and-watch-filtering">LIST
+and WATCH filtering</a></p>
+<p>6. Will this command display a list of volumes for a specific
+container?</p>
+<p>Solution: "docker volume logs nginx --containers"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker volume inspect nginx"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker container logs nginx --volumes"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker container inspect nginx"</p>
+<p><strong>Yes</strong></p>
+<p>7. A host machine has four CPUs available and two running containers.
+The sysadmin would like to assign two CPUs to each container.</p>
+<p>Which of the following commands achieves this?</p>
+<p>A. Set the "--cpuset-cpus" flag to "1,3" on one container and "2,4"
+on the other container.</p>
+<p>B. Set the "--cpuset-cpus" flag to ".5" on both containers.</p>
+<p>C. Set the "--cpuset-cpus" flag of the "dockerd" process to the value
+"even-spread".</p>
+<p>D. Set the "--cpu-quota" flag to "1,3" on one container and "2,4" on
+the other container.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/config/containers/resource_constraints/#cpu">CPU</a></p>
+<p><code>--cpus=&lt;value&gt;</code></p>
+<p>Specify how much of the available CPU resources a container can use.
+For instance, if the host machine has two CPUs and you set
+<code>--cpus="1.5"</code>, the container is guaranteed at most one and a
+half of the CPUs.</p>
+<p>--cpuset-cpus</p>
+<p>Limit the specific CPUs or cores a container can use. A
+comma-separated list or hyphen-separated range of CPUs a container can
+use, if you have more than one CPU. The first CPU is numbered 0. A valid
+value might be <code>0-3</code> (to use the first, second, third, and
+fourth CPU) or <code>1,3</code> (to use the second and fourth CPU).</p>
+<p>If you have 1 CPU, each of the following commands guarantees the
+container at most 50% of the CPU every second.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --cpus=<span class="string">&quot;.5&quot;</span> ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+<p>Which is the equivalent to manually specifying
+<code>--cpu-period</code> and <code>--cpu-quota</code>.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --cpu-period=100000 --cpu-quota=50000 ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+<p>8. The Kubernetes yaml shown below describes a clusterIP service.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">dca</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">clusterIP</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">4443</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">443</span></span><br></pre></td></tr></table></figure>
+<p>Is this a correct statement about how this service routes
+requests?</p>
+<p>Solution: Traffic sent to the IP of this service on port 8080 will be
+routed to port 80 in a random pod with the label app: nginx.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Traffic sent to the IP of any pod with the label app: nginx
+on port 8080 will be forwarded to port 80 in that pod.</p>
+<p><strong>No</strong></p>
+<p>9. A container named "analytics" that stores results in a volume
+called "data" was created.</p>
+<p>docker run -d --name=analytics -v data:/data app1</p>
+<p>How are the results accessed in "data" with another container called
+"app2"?</p>
+<p>A. docker run -d --name=reports --volume=data app2</p>
+<p><strong>B. docker run -d --name=reports --volumes-from=analytics
+app2</strong></p>
+<p>C. docker run -d --name=reports --volume=app1 app2</p>
+<p>D. docker run -d --name=reports --mount=app1 app2</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/run/#mount-volumes-from-container---volumes-from">Mount
+volumes from container (--volumes-from)</a></p>
+<p>10. A user is having problems running Docker. Which of the following
+will start Docker in debug mode?</p>
+<p><strong>A. Set the debug key to true in the "daemon.json"
+file.</strong></p>
+<p>B. Start the "dockerd" process manually with the "--logging" flag set
+to debug.</p>
+<p>C. Set the logging key to debug in the "daemon.json" file.</p>
+<p>D. Start the "dockerd" process manually with the "--raw-logs" flag
+set to debug.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/config/daemon/#enable-debugging">Enable
+debugging</a></p>
+<p>11. Will this action upgrade Docker Engine CE to Docker Engine
+EE?</p>
+<p>Solution: Uninstall "docker-ce" package before installing "docker-ee"
+package.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Delete "/var/lib/docker" directory.</p>
+<p><strong>No</strong></p>
+<p>Solution: Manually download the "docker-ee" package.</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docker-docs.netlify.app/install/linux/docker-ee/centos/#uninstall-old-docker-versions">Uninstall
+old Docker versions</a></p>
+<p>The Docker EE package is called <code>docker-ee</code>. Older
+versions were called <code>docker</code> or <code>docker-engine</code>.
+Uninstall all older versions and associated dependencies. The contents
+of <code>/var/lib/docker/</code> are preserved, including images,
+containers, volumes, and networks. If you are upgrading from Docker CE
+to Docker EE, remove the Docker CE package as well.</p>
+<p>12. Which of the following commands automatically create a volume
+when a container is started?</p>
+<p><strong>A. docker container run --name nginxtest --volume=/app
+nginx</strong></p>
+<p>B. docker container run --name nginxtest -v /app:mount nginx</p>
+<p>C. docker container run --name nginxtest --volume myvol:/app:new
+nginx</p>
+<p><strong>D. docker container run --name nginxtest -v myvol:/app
+nginx</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume">Start
+a container with a volume</a></p>
+<p>If you start a container with a volume that does not yet exist,
+Docker creates the volume for you.</p>
+<p>13. Following the principle of least privilege, which of the
+following methods can be used to securely grant access to the specific
+user to communicate to a Docker engine? (Choose two.)</p>
+<p>A. Utilize the "--host 0.0.0.0:2375" option to the Docker daemon to
+listen on port 2375 over TCP on all interfaces.</p>
+<p><strong>B. Utilize openssl to create TLS client and server
+certificates, configuring the Docker engine to use with mutual TLS over
+TCP.</strong></p>
+<p>C. Utilize the "--host 127.0.0.1:2375" option to the Docker daemon to
+listen on port 2375 over TCP on localhost.</p>
+<p>D. Give the user root access to the server to allow them to run
+Docker commands as root.</p>
+<p><strong>E. Add the user to the "docker" group on the server or
+specify the group with the "--group" Docker daemon option.</strong></p>
+<p>14. What is the purpose of a client bundle in the Universal Control
+Plane?</p>
+<p><strong>A. Authenticate a user using client certificates to the
+Universal Control Plane.</strong></p>
+<p>B. Provide a new user instructions for how to login to the Universal
+Control Plane.</p>
+<p>C. Provide a user with a Docker client binary compatible with the
+Universal Control Plane.</p>
+<p>D. Group multiple users in a team in the Universal Control Plane.</p>
+<p><a
+target="_blank" rel="noopener" href="https://www.docker.com/blog/get-familiar-docker-enterprise-edition-client-bundles/">Get
+Familiar with Docker Enterprise Edition Client Bundles</a></p>
+<p>A client bundle is a group of certificates downloadable directly from
+the Docker Universal Control Plane (UCP) user interface within the admin
+section for “My Profile”. This allows you to authorize a remote Docker
+engine to a specific user account managed in Docker EE, absorbing all
+associated RBAC controls in the process. You can now execute docker
+swarm commands from your remote machine that take effect on the remote
+cluster.</p>
+<p><a
+target="_blank" rel="noopener" href="https://dker.ru/docs/universal-control-plane/access-ucp/cli-based-access/">CLI-based
+access</a></p>
+<p>Docker UCP secures your cluster with role-based access control, so
+that only authorized users can perform changes to the cluster.</p>
+<p>Once you’ve downloaded a client certificate bundle, you can use it to
+authenticate your requests.</p>
+<p>15. You want to mount external storage to a particular filesystem
+path in a container in a Kubernetes pod. What is the correct set of
+objects to use for this?</p>
+<p>A. A volume in the pod specification, populated with a
+persistentVolumeClaim bound to a perslstentVolume defined by a
+storageClass.</p>
+<p>B. A storageClass in the pod specification, populated with a volume
+which is bound to a provisioner defined by a persistentVolume.</p>
+<p>C. A volume in the pod specification, populated with a storageClass
+which is bound to a provisioner defined by a persistentVolume.</p>
+<p>D. A persistentVolume in the pod specification, populated with a
+persistentVolumeClaim which is bound to a volume defined by a
+storageClass.</p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/">Configure
+a Pod to Use a PersistentVolume for Storage</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">task-pv-volume</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">local</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">10Mi</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">hostPath:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">&quot;/mnt/data&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">task-pv-claim</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">3Mi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">task-pv-pod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">task-pv-storage</span></span><br><span class="line">      <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">        <span class="attr">claimName:</span> <span class="string">task-pv-claim</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">task-pv-container</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">      <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&quot;http-server&quot;</span></span><br><span class="line">      <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/usr/share/nginx/html&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">task-pv-storage</span></span><br></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/">Dynamic
+Volume Provisioning</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">storage.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StorageClass</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">fast</span></span><br><span class="line"><span class="attr">provisioner:</span> <span class="string">kubernetes.io/gce-pd</span></span><br><span class="line"><span class="attr">parameters:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">pd-ssd</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">claim</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">fast</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">10Mi</span></span><br></pre></td></tr></table></figure>
+<p>16. Which of the following is true about using the "-P" option when
+creating a new container?</p>
+<p><strong>A. Docker binds each exposed container port to a random port
+on all the host's interface.</strong></p>
+<p>B. Docker gives extended privileges to the container.</p>
+<p>C. Docker binds each exposed container port to a random port on a
+specified host's interface.</p>
+<p>D. Docker binds each exposed container port with the same port on the
+host.</p>
+<p>17. What is used by the kernel to isolate resources when running
+Docker containers?</p>
+<p>A. Namespaces</p>
+<p>B. Overlay networks</p>
+<p>C. Volumes</p>
+<p><strong>D. Control groups (also know as cgroups)</strong></p>
+<p>18. Does this describe the role of Control Groups (cgroups) when used
+with a Docker container?</p>
+<p>Solution: role-based access control to clustered resources.</p>
+<p><strong>No</strong></p>
+<p>Solution: accounting and limiting of resources.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: user authorization to the Docker API.</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/#control-groups">Control
+groups</a></p>
+<p>Control Groups are another key component of Linux Containers. They
+implement resource accounting and limiting. They provide many useful
+metrics, but they also help ensure that each container gets its fair
+share of memory, CPU, disk I/O; and, more importantly, that a single
+container cannot bring the system down by exhausting one of those
+resources.</p>
+<p>19. What is one way of directly transferring a Docker Image from one
+Docker host in another?</p>
+<p>A. "docker push" the image to the IP address of the target host.</p>
+<p>B. "docker commit" to save the image outside of the Docker
+filesystem. Then transfer the file over to the target host and "docker
+start" to start the container again.</p>
+<p>C. There is no way of directly transferring Docker images between
+hosts. A Docker Registry must be used ad an intermediary.</p>
+<p><strong>D. "docker save" the image to save it as TAR file and copy it
+over to the target host. Then use "docker load" to un-TAR the image back
+as a Docker image.</strong></p>
+<p>20. How do you configure Docker engine to use a registry that is not
+configured with TLS certificates from a trusted CA?</p>
+<p>A. Set IGNORE_TLS in the "daemon.json" configuration file.</p>
+<p>B. Set and export the IGNORE_TLS environment variable on the command
+line.</p>
+<p>C. Set INSECURE_REGISTRY in the "/etc/docker/default" configuration
+file.</p>
+<p><strong>D. Pass the "--insecure-registry" flag to the daemon at
+runtime.</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/registry/insecure/">Test an insecure
+registry</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/dockerd/#insecure-registries">Insecure
+registries</a></p>
+<p>21. Which of the following are types of namespaces used by Docker to
+provide isolation? (Choose two.)</p>
+<p>A. Host</p>
+<p><strong>B. Network</strong></p>
+<p><strong>C. Process ID</strong></p>
+<p>D. Authentication</p>
+<p>E. Storage</p>
+<p>22. Which of the following commands will create a Swarm service which
+only listens on port 53 using the UDP protocol?</p>
+<p><strong>A. docker service create --name dns-cache -p 53:53/udp
+dns-cache</strong></p>
+<p>B. docker service create --name dns-cache -p 53:53 --service udp
+dns-cache</p>
+<p>C. docker service create --name dns-cache -p 53:53 --constraint
+networking.protocol.udp=true dns-cache</p>
+<p>D. docker service create --name dns-cache -p 53:53 --udp
+dns-cache</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_create/#publish-service-ports-externally-to-the-swarm--p---publish">Publish
+service ports externally to the swarm (-p, --publish)</a></p>
+<p>--publish 8080:80/tcp</p>
+<p>--publish published=8080,target=80,protocol=tcp</p>
+<p>23. Which of the following is true about overlay networks?</p>
+<p>A. Overlay networks are created only on the manager node that you
+created the overlay networking on.</p>
+<p>B. Overlay networks are created on all cluster nodes when you create
+the overlay network.</p>
+<p><strong>C. Overlay networks are first created on the manager nodes.
+Then they are created on the worker nodes once a task is scheduled on
+the specific worker node.</strong></p>
+<p>D. Overlay networks are only created on the manager nodes.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/network/network-tutorial-overlay/#create-the-services">Create
+the services</a></p>
+<p>On <code>manager</code>, create a new overlay network.</p>
+<p>You don’t need to create the overlay network on the other nodes,
+because it will be automatically created when one of those nodes starts
+running a service task which requires it.</p>
+<p>26. What is the recommended way to configure the daemon flags and
+environment variables for your Docker daemon in a platform independent
+way?</p>
+<p>A. Set the configuration options using the ENV variable.</p>
+<p><strong>B. Set the configuration options in
+"/etc/docker/daemon.json".</strong></p>
+<p>C. Set the configuration DOCKER_OPTS in "/etc/default/docker".</p>
+<p>D. Using "docker config" to set the configuration options.</p>
+<p>27. A company's security policy specifies that development and
+production containers must run on separate nodes in a given Swarm
+cluster.</p>
+<p>Can this be used to schedule containers to meet the security policy
+requirements?</p>
+<p>Solution: label constraints</p>
+<p>Solution: node taints</p>
+<p><strong>No</strong></p>
+<p>Solution: resource reservation</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/services/#placement-constraints">Placement
+constraints</a></p>
+<p>Use placement constraints to control the nodes a service can be
+assigned to.</p>
+<p>28. In the context of a Swarm mode cluster, does this describe a
+node?</p>
+<p>Solution: an instance of the Docker engine participating in the
+Swarm.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: a virtual machine participating in the swarm.</p>
+<p><strong>No</strong></p>
+<p>Solution: a physical machine participating in the swarm.</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/key-concepts/#nodes">Nodes</a></p>
+<p>30. You created a new service named "http" and discover it is not
+registering as healthy. Will this command enable you to view the list of
+historical tasks for this service?</p>
+<p>Solution: "docker inspect http"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker service ps http"</p>
+<p><strong>Yes</strong></p>
+<p>Solution: "docker service inspect http"</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_ps/">docker
+service ps</a></p>
+<p>In addition to <em>running</em> tasks, the output also shows the task
+history.</p>
+<p>31. Will this sequence of steps completely delete an image from disk
+in the Docker Trusted Registry?</p>
+<p>Solution: Delete the image and run garbage collection on the Docker
+Trusted Registry.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Delete the image and delete the image repository from
+Docker Trusted Registry.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/registry/garbage-collection/">Garbage
+collection</a></p>
+<p><em>About garbage collection</em></p>
+<p>In the context of the Docker registry, garbage collection is the
+process of removing blobs from the filesystem when they are no longer
+referenced by a manifest.</p>
+<p><em>Garbage collection in practice</em></p>
+<p>Filesystem layers are stored by their content address in the
+Registry. This has many advantages, one of which is that data is stored
+once and referred to by manifests.</p>
+<p>Layers are therefore shared amongst manifests; each manifest
+maintains a reference to the layer. As long as a layer is referenced by
+one manifest, it cannot be garbage collected.</p>
+<p>Manifests and layers can be <code>deleted</code> with the registry
+API. This API removes references to the target and makes them eligible
+for garbage collection. It also makes them unable to be read via the
+API.</p>
+<p>If a layer is deleted, it is removed from the filesystem when garbage
+collection is run. If a manifest is deleted the layers to which it
+refers are removed from the filesystem if no other manifests refers to
+them.</p>
+<p><em>More details about garbage collection</em></p>
+<p>Garbage collection runs in two phases. First, in the "mark" phase,
+the process scans all the manifests in the registry. From these
+manifests, it constructs a set of content address digests. This set is
+the "mark set" and denotes the set of blobs to <em>not</em> delete.
+Secondly, in the "sweep" phase, the process scans all the blobs and if a
+blob’s content address digest is not in the mark set, the process
+deletes it.</p>
+<p>32. Seven managers are in a swarm cluster.</p>
+<p>Is this how should they be distributed across three datacenters or
+availability zones?</p>
+<p>Solution: 5-1-1</p>
+<p><strong>No</strong></p>
+<p>Solution: 3-3-1</p>
+<p><strong>No</strong></p>
+<p>Solution: 3-2-2</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/admin_guide/#distribute-manager-nodes">Distribute
+manager nodes</a></p>
+<p>33. You configure a local Docker engine to enforce content trust by
+setting the environment variable DOCKER_CONTENT_TRUST=1.</p>
+<p>If myorg/myimage:1.0 is unsigned, does Docker block this command?</p>
+<p>Solution:
+<code>docker image import &lt;tarball&gt; myorg/myimage:1.0</code></p>
+<p><strong>No</strong></p>
+<p>Solution: docker service create myorg/myimage:1.0</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/trust/#client-enforcement-with-docker-content-trust">Client
+Enforcement with Docker Content Trust</a></p>
+<p>34. During development of an application meant to be orchestrated by
+Kubernetes, you want to mount the /data directory on your laptop into a
+container.</p>
+<p>Will this strategy successfully accomplish this?</p>
+<p>Solution: Add a volume to the pod that sets hostPath.path: /data, and
+then mount this volume into the pod's containers as desired.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Create a PersistentVolume with storageClass: "" and
+hostPath: /data, and a persistentVolumeClaim requesting this PV. Then
+use that PVC to populate a volume in a pod.</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/storage/volumes/#hostpath">hostPath</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/">Configure
+a Pod to Use a PersistentVolume for Storage</a></p>
+<p>35. Two development teams in your organization use Kubernetes and
+want to deploy their applications while ensuring that
+Kubernetes-specific resources, such as secrets, are grouped together for
+each application.</p>
+<p>Is this a way to accomplish this?</p>
+<p>Solution: Create one namespace for each application and add all the
+resources to it.</p>
+<p>Solution: Add all the resources to the default namespace.</p>
+<p>Solution: Create one pod and add all the resources needed for each
+application.</p>
+<p>36. Will this command mount the host's "/data" directory to the
+ubuntu container in read-only mode?</p>
+<p>Solution: "docker run -v /data:/mydata --mode readonly ubuntu"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker run --add-volume /data /mydata -read-only
+ubuntu"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker run --volume /data:/mydata:ro ubuntu"</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/storage/bind-mounts/#use-a-read-only-bind-mount">Use
+a read-only bind mount</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  -it \</span><br><span class="line">  --name devtest \</span><br><span class="line">  --mount <span class="built_in">type</span>=<span class="built_in">bind</span>,<span class="built_in">source</span>=<span class="string">&quot;<span class="subst">$(pwd)</span>&quot;</span>/target,target=/app,<span class="built_in">readonly</span> \</span><br><span class="line">  nginx:latest</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  -it \</span><br><span class="line">  --name devtest \</span><br><span class="line">  -v <span class="string">&quot;<span class="subst">$(pwd)</span>&quot;</span>/target:/app:ro \</span><br><span class="line">  nginx:latest</span><br></pre></td></tr></table></figure>
+<p>37. What is the purpose of Docker Content Trust?</p>
+<p><strong>A. Signing and verification of image tags.</strong></p>
+<p>B. Enabling mutual TLS between the Docker client and server.</p>
+<p>C. Docker registry TLS verification and encryption.</p>
+<p>D. Indicating an image on Docker Hub is an official image.</p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/trust/">Content
+trust in Docker</a></p>
+<p>Docker Content Trust (DCT) provides the ability to use digital
+signatures for data sent to and received from remote Docker registries.
+These signatures allow client-side or runtime verification of the
+integrity and publisher of specific image tags.</p>
+<p>Through DCT, image publishers can sign their images and image
+consumers can ensure that the images they pull are signed.</p>
+<p>38. In Docker Trusted Registry, how would a user prevent an image,
+for example "nginx:latest" from being overwritten by another user with
+push access to the repository?</p>
+<p>A. Tag the image with "nginx:immutable".</p>
+<p>B. Remove push access from all other users.</p>
+<p><strong>C. Use the DTR web UI to make the tag immutable.</strong></p>
+<p>D. Keep a backup copy of the image on another repository.</p>
+<p>40. A users attempts to set the system time from inside a Docker
+container are unsuccessful. Could this be blocking this operation?</p>
+<p>Solution: inter-process communication</p>
+<p><strong>No</strong></p>
+<p>Solution: Linux capabilities</p>
+<p><strong>Yes</strong></p>
+<p>41. The following health check exists in a Dockerfile:</p>
+<p>"HEALTCHECK CMD curl --fail http://localhost/health || exit 1"</p>
+<p>Which of the following describes its purpose?</p>
+<p>A. Defines the action taken when container health fails, which in
+this case will kill the container with exit status 1.</p>
+<p>B. Defines the health check endpoint on the localhost interface for
+external monitoring tools to monitor the health of the docker
+engine.</p>
+<p>C. Defines the health check endpoint on the localhost interface for
+containers to monitor the health of the docker engine.</p>
+<p><strong>D. Defines the health check for the containerized application
+so that the application health can be monitored by the Docker
+engine.</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/#healthcheck">HEALTHCHECK</a></p>
+<p>The <code>HEALTHCHECK</code> instruction has two forms:</p>
+<ul>
+<li><code>HEALTHCHECK [OPTIONS] CMD command</code> (check container
+health by running a command inside the container)</li>
+<li><code>HEALTHCHECK NONE</code> (disable any healthcheck inherited
+from the base image)</li>
+</ul>
+<p>The <code>HEALTHCHECK</code> instruction tells Docker how to test a
+container to check that it is still working. This can detect cases such
+as a web server that is stuck in an infinite loop and unable to handle
+new connections, even though the server process is still running.</p>
+<p>The command’s exit status indicates the health status of the
+container. The possible values are:</p>
+<ul>
+<li>0: success - the container is healthy and ready for use</li>
+<li>1: unhealthy - the container is not working correctly</li>
+<li>2: reserved - do not use this exit code</li>
+</ul>
+<p>42. After creating a new service named "http", you notice that the
+new service is not registering as healthy. How do you view the list of
+historical tasks for that service by using the command line?</p>
+<p>A. "docker inspect http"</p>
+<p>B. "docker service inspect http"</p>
+<p><strong>C. "docker service ps http"</strong></p>
+<p>D. "docker ps http"</p>
+<p>43. You are troubleshooting a Kubernetes deployment called api, and
+want to see the events table for this object. Does this command display
+it?</p>
+<p>Solution: kubectl logs deployment api</p>
+<p><strong>No</strong></p>
+<p>Solution: kubectl events deployment api</p>
+<p><strong>No</strong></p>
+<p>Solution: kubectl describe deployment api</p>
+<p><strong>Yes</strong></p>
+<p>45. Which of the following modes can be used for service discovery of
+a Docker swarm service (Pick two correct answers)?</p>
+<p><strong>A. Virtual IP (VIP) with --endpoint-mode vip</strong></p>
+<p>B. Overlay with --endpoint-mode overlay</p>
+<p><strong>C. DNS Round-Robin with --endpoint-mode dnsrr</strong></p>
+<p>D. Ingress with --endpoint-mode ingress</p>
+<p>E. Network Address Translation (NAT) with --endpoint-mode nat</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/networking/#configure-service-discovery">Configure
+service discovery</a></p>
+<p>Service discovery is the mechanism Docker uses to route a request
+from your service’s external clients to an individual swarm node,
+without the client needing to know how many nodes are participating in
+the service or their IP addresses or ports.</p>
+<p>Service discovery can work in two different ways: internal
+connection-based load-balancing at Layers 3 and 4 using the embedded DNS
+and a virtual IP (VIP), or external and customized request-based
+load-balancing at Layer 7 using DNS round robin (DNSRR). You can
+configure this per service.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/network/overlay/#bypass-the-routing-mesh-for-a-swarm-service">Bypass
+the routing mesh for a swarm service</a></p>
+<p>Services using the routing mesh are running in <em>virtual IP (VIP)
+mode</em>.</p>
+<p>To bypass the routing mesh, you can start a service using <em>DNS
+Round Robin (DNSRR) mode</em>, by setting the
+<code>--endpoint-mode</code> flag to <code>dnsrr</code>.</p>
+<p>47. The output of which command can be used to find the architecture
+and operating system an image is compatible with?</p>
+<p>A.
+<code>docker image inspect --filter &#123;&#123;.Architecture&#125;&#125; &#123;&#123;.OS&#125;&#125; &lt;image-id&gt;</code></p>
+<p>B. <code>docker image ls &lt;image-id&gt;</code></p>
+<p><strong>C.
+<code>docker image inspect --format &#123;&#123;.Architecture&#125;&#125; &#123;&#123;.OS&#125;&#125; &lt;image-id&gt;</code></strong></p>
+<p>D. <code>docker image info &lt;image-id&gt;</code></p>
+<p>49. How do you change the default logging driver for the docker
+daemon in Linux?</p>
+<p><strong>A. Set the value of log-driver to the name of the logging
+driver in the daemon.json in /etc/docker.</strong></p>
+<p>B. Use the --log-driver flag when you run a container.</p>
+<p>C. At the command line, type: docker log driver set
+<code>&lt;driver name&gt;</code>.</p>
+<p>D. Install a logging agent on the Linux host.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/config/containers/logging/configure/">Configure
+logging drivers</a></p>
+<p>52. A Kubernetes node is allocated a /26 CIDR block (64 unique IPs)
+for its address space.</p>
+<p>If every pod on this node has exactly two containers in it, how many
+pods can this address space support on this node?</p>
+<p>A. 32</p>
+<p>B. 64</p>
+<p>C. 32 in every Kubernetes namespace</p>
+<p>D. 64 for every service routing to pods on this node</p>
+<p>53. A docker service "web" is running with a scale factor of 1
+(replicas = 1).</p>
+<p>Bob intends to use the command "docker service update --replicas=3
+web".</p>
+<p>Alice intends to use the command "docker service scale web=3".</p>
+<p>How do the outcomes of these two commands differ?</p>
+<p>A. Bob's command results in an error. Alice's command updates the
+number of replicas of the "web" service to 3.</p>
+<p>B. Bob's command only updates the service definition, but no new
+replicas are started. Alice's command results in the actual scaling up
+of the "web" service.</p>
+<p>C. Bob's command updates the number of replicas of the "web" service
+to 3. Alice's command results in an error.</p>
+<p><strong>D. Both Bob's and Alice's commands result in exactly the same
+outcome, which is 3 instances of the "web" service.</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_scale/">docker
+service scale</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_update/">docker
+service update</a></p>
+<p>54. Which set of commands can identify the publishd port(s) for a
+container?</p>
+<p>A. "docker port inspect", "docker container inspect"</p>
+<p><strong>B. "docker container inspect", "docker port"</strong></p>
+<p>C. "docker info", "docker network inspect"</p>
+<p>D. "docker network inspect", "docker port"</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/port/">docker
+port</a></p>
+<p>56. You want to create a container that is reachable from its host's
+network. Does this action accomplish this?</p>
+<p>Solution: Use either EXPOSE or --publish to access the containers on
+the bridge network.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Use --link to access the container on the bridge
+network.</p>
+<p><strong>No</strong></p>
+<p>Solution: Use network attach to access the containers on the bridge
+network.</p>
+<p><strong>No</strong></p>
+<p>57. Will this command list all nodes in a swarm cluster from the
+command line?</p>
+<p>Solution: "docker swarm nodes"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker Is -a"</p>
+<p><strong>No</strong></p>
+<p>Solution: "docker node Is"</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/node_ls/">docker
+node ls</a></p>
+<p>60. Is this an advantage of multi-stage builds?</p>
+<p>Solution: better caching when building Docker images.</p>
+<p><strong>No</strong></p>
+<p>Solution: optimizes images by copying artifacts selectively from
+previous stages.</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/get-started/09_image_best/#multi-stage-builds">Multi-stage
+builds</a></p>
+<p>There are several advantages for them:</p>
+<ul>
+<li>Separate build-time dependencies from runtime dependencies</li>
+<li>Reduce overall image size by shipping <em>only</em> what your app
+needs to run</li>
+</ul>
+<p>61. An application image runs in multiple environments, with each
+environment using different certificates and ports.</p>
+<p>Is this a way to provision configuration to containers at
+runtime?</p>
+<p>Solution: Provision a Docker config object for each environment.</p>
+<p><strong>Yes</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/configs/">Store
+configuration data using Docker Configs</a></p>
+<p>Docker swarm service configs allow you to store non-sensitive
+information, such as configuration files, outside a service’s image or
+running containers. This allows you to keep your images as generic as
+possible, without the need to bind-mount configuration files into the
+containers or use environment variables.</p>
+<p>64. Will this command ensure that overlay traffic between service
+tasks is encrypted?</p>
+<p>Solution: docker service create --network --secure</p>
+<p><strong>No</strong></p>
+<p>Solution: docker service create --network --encrypted</p>
+<p><strong>No</strong></p>
+<p>Solution: docker network create -d overlay --secure</p>
+<p><strong>No</strong></p>
+<p>Solution: docker network create -d overlay -o encrypted=true
+<code>&lt;network-name&gt;</code></p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/network/overlay/#encrypt-traffic-on-an-overlay-network">Encrypt
+traffic on an overlay network</a></p>
+<p>To encrypt application data as well, add <code>--opt encrypted</code>
+when creating the overlay network.</p>
+<p>65. If installing Docker using devicemapper for storage with the
+intent to run production workloads, how should devicemapper be
+configured?</p>
+<p><strong>A. direct-lvm</strong></p>
+<p>B. loop-lvm</p>
+<p>C. overlay-lvm</p>
+<p>D. aufs-lvm</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/storage/storagedriver/device-mapper-driver/">Use
+the Device Mapper storage driver</a></p>
+<p>66. You want to provide a configuration file to a container at
+runtime. Does this set of Kubernetes tools and steps accomplish
+this?</p>
+<p>Solution: Mount the configuration file directly into the appropriate
+pod and container using the .spec.containers.configMounts key.</p>
+<p><strong>No</strong></p>
+<p>Solution: Turn the configuration file into a configMap object, use it
+to populate a volume associated with the pod, and mount that file from
+the volume to the appropriate container and path.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Turn the configuration file into a configMap object and
+mount it directly into the appropriate pod and container using the
+.spec.containers.configMounts key.</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">Configure
+a Pod to Use a ConfigMap</a></p>
+<p>67. You have deployed a service to swarm. Which command uses the
+Docker CLI to set the number of tasks of the services to 5? (Choose
+two.)</p>
+<p><strong>A.
+<code>docker service update --replicas=5 &lt;service-id&gt;</code></strong></p>
+<p>B. <code>docker replica update &lt;service-id&gt;=5</code></p>
+<p>C. <code>docker update service &lt;service-id&gt;=5</code></p>
+<p>D. <code>docker service replicas &lt;service-id&gt;=5</code></p>
+<p><strong>E.
+<code>docker service scale &lt;service-id&gt;=5</code></strong></p>
+<p>68. Which command interactively monitors all container activity in
+the Docker engine?</p>
+<p>A. docker system logs</p>
+<p><strong>B. docker system events</strong></p>
+<p>C. docker container events</p>
+<p>D. docker container logs</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/system_events/">docker
+system events</a></p>
+<p>73. Which of the following commands is used to display system-wide
+Docker configuration on a host?</p>
+<p><strong>A. docker info</strong></p>
+<p>B. docker status</p>
+<p>C. docker inspect</p>
+<p>D. docker system</p>
+<p>74. Will this configuration achieve fault tolerance for managers in a
+swarm?</p>
+<p>Solution: only two managers, one active and one passive.</p>
+<p><strong>No</strong></p>
+<p>Solution: an odd number of manager nodes, totaling more than two.</p>
+<p><strong>Yes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/admin_guide/#add-manager-nodes-for-fault-tolerance">Add
+manager nodes for fault tolerance</a></p>
+<p>75. Your organization has a centralized logging solution, such as
+Splunk.</p>
+<p>Will this configure a Docker container to export container logs to
+the logging solution?</p>
+<p>Solution: <code>docker logs &lt;container-id&gt;</code></p>
+<p><strong>No</strong></p>
+<p>Solution: Set the log-driver and log-opt keys to values for the
+logging solution (Splunk) in the daemon.json file.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: docker system events --filter splunk.</p>
+<p><strong>No</strong></p>
+<p>77. Are these conditions sufficient for Kubernetes to dynamically
+provision a persistentVolume, assuming there are no limitations on the
+amount and type of available external storage?</p>
+<p>Solution: A default storageClass is specified, and subsequently a
+persistentVolumeClaim is created.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: A default provisioner is specified, and subsequently a
+persistentVolumeClaim is created.</p>
+<p><strong>No</strong></p>
+<p>78. Which of the following is required to install Docker EE from a
+package repository?</p>
+<p><strong>A. Repository URL obtained from Docker Store</strong></p>
+<p>B. License key obtained from Docker Store</p>
+<p>C. Repository URL obtained from Docker Hub</p>
+<p>D. License key obtained from Docker Hub</p>
+<p><a
+target="_blank" rel="noopener" href="https://docker-docs.netlify.app/install/linux/docker-ee/centos/#find-your-docker-ee-repo-url">Find
+your Docker EE repo URL</a></p>
+<p>79. You have created a Docker bridge network on a host with three
+containers attached, how do you make this containers accessible outside
+of the host?</p>
+<p>A. Use network attach to access the containers on the bridge
+network.</p>
+<p><strong>B. Use either EXPOSE or --publish to access the containers on
+the bridge network.</strong></p>
+<p>C. Use network connect to access the containers on the bridge
+network.</p>
+<p>D. Use --link to access the containers on the bridge network.</p>
+<p>80. You have just executed "docker swarm leave" on a node. What
+command can be run on the same node to confirm it has left the
+cluster?</p>
+<p>A. docker node ls</p>
+<p><strong>B. docker system info</strong></p>
+<p>C. docker system status</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/swarm_leave/">docker
+swarm leave</a></p>
+<p>When you run this command on a worker, that worker leaves the
+swarm.</p>
+<p>You can use the <code>--force</code> option on a manager to remove it
+from the swarm. However, this does not reconfigure the swarm to ensure
+that there are enough managers to maintain a quorum in the swarm. The
+safe way to remove a manager from a swarm is to demote it to a worker
+and then direct it to leave the quorum without using
+<code>--force</code>. Only use <code>--force</code> in situations where
+the swarm will no longer be used after the manager leaves, such as in a
+single-node swarm.</p>
+<p>81. Which of the following namespaces is disabled by default and must
+be enabled at Docker engine runtime in order to be used?</p>
+<p><strong>A. user</strong></p>
+<p>B. pid</p>
+<p>C. net</p>
+<p>D. mnt</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/userns-remap/">Isolate
+containers with a user namespace</a></p>
+<p>82. You are pulling images from a Docker Trusted Registry
+installation configured to use self-signed certificates, and this error
+appears:</p>
+<p>x509: certificate signed by unknown authority.</p>
+<p>You already downloaded the Docker Trusted Registry certificate
+authority certificate from https://dtr.example.com/ca.</p>
+<p>How do you trust it? (Select two.)</p>
+<p>A. Place the certificate in "/etc/docker/dtr/dtr.example.com.crt" and
+restart the Docker daemon on all cluster nodes.</p>
+<p><strong>B. Place the certificate in your OS certificate path, trust
+the certificate system-wide, and restart the Docker daemon across all
+cluster nodes.</strong></p>
+<p>C. Pass "--trust-certificate ca.crt" to the Docker client.</p>
+<p>D. Pass --insecure-registry to the Docker client.</p>
+<p><strong>E. Place the certificate in "/etc/docker/certs.d/dtr.example
+com/ca.crt" on all cluster nodes.</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/registry/insecure/">Test an insecure
+registry</a></p>
+<p>86. Is this a function of UCP?</p>
+<p>Solution: scans images to detect any security vulnerability.</p>
+<p><strong>No</strong></p>
+<p>Solution: image role-based access control.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: enforces the deployment of signed images to the
+cluster.</p>
+<p><strong>No</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://faun.pub/container-security-101-scanning-images-for-vulnerabilities-28391ee7170e">Container
+Security 101 — Scanning images for Vulnerabilities</a></p>
+<p>88. Which of the following is NOT backed up when performing a Docker
+Trusted Registry backup operation?</p>
+<p>A. Access control to repos and images</p>
+<p>B. Repository metadata</p>
+<p><strong>C. Image blobs</strong></p>
+<p>D. DTR configurations</p>
+<p><a
+target="_blank" rel="noopener" href="https://hewlettpackard.github.io/Docker-Synergy/backup-restore/backup-ucp-dtr.html#backup-ucp-and-dtr">Backup
+UCP and DTR</a></p>
+<p>89. Which flag for a service would allow a container to consume more
+than 2 GB of memory only when there is no memory contention but would
+also prevent a container from consuming more than 4GB of memory, in any
+case?</p>
+<p>A. --limit-memory 2GB --reserve-memory 4GB</p>
+<p><strong>B. --limit-memory 4GB --reserve-memory 2GB</strong></p>
+<p>C. --memory-swap 2GB --limit-memory 4GB</p>
+<p>D. --memory-swap 4GB --limit-memory 2GB</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/config/containers/resource_constraints/#limit-a-containers-access-to-memory">Limit
+a container’s access to memory</a></p>
+<p>Docker can enforce hard memory limits, which allow the container to
+use no more than a given amount of user or system memory, or soft
+limits, which allow the container to use as much memory as it needs
+unless certain conditions are met, such as when the kernel detects low
+memory or contention on the host machine.</p>
+<p><code>-m</code> or <code>--memory</code></p>
+<p>The maximum amount of memory the container can use.</p>
+<p><code>--memory-reservation</code></p>
+<p>Allows you to specify a soft limit smaller than <code>--memory</code>
+which is activated when Docker detects contention or low memory on the
+host machine.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_create/#specify-memory-requirements-and-constraints-for-a-service---reserve-memory-and---limit-memory">Specify
+memory requirements and constraints for a service (--reserve-memory and
+--limit-memory)</a></p>
+<p>96. Which one of the following commands will result in the volume
+being removed automatically once the container has exited?</p>
+<p>A. "docker run --del -v /foo busybox"</p>
+<p>B. "docker run --read-only -v /foo busybox"</p>
+<p><strong>C. "docker run --rm -v /foo busybox"</strong></p>
+<p>D. "docker run --remove -v /foo busybox"</p>
+<p>97. Which "docker run" flag lifts cgroup limitations?</p>
+<p>A. "docker run --isolation"</p>
+<p>B. "docker run --cap-drop"</p>
+<p><strong>C. "docker run --privileged"</strong></p>
+<p>D. "docker run --cpu-period"</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Runtime
+privilege and Linux capabilities</a></p>
+<p>The --privileged flag gives all capabilities to the container.</p>
+<p>In addition to <code>--privileged</code>, the operator can have fine
+grain control over the capabilities using <code>--cap-add</code> and
+<code>--cap-drop</code>.</p>
+<p>98. You are running only Kubernetes workloads on a worker node that
+requires maintenance, such as installing patches or an OS upgrade.</p>
+<p>Which command must be run on the node to gracefully terminate all
+pods on the node, while marking the node as unschedulable?</p>
+<p>A.
+<code>docker node update --availability drain &lt;node name&gt;</code></p>
+<p>B. docker swarm leave</p>
+<p><strong>C. <code>kubectl drain &lt;node name&gt;</code></strong></p>
+<p>D. <code>kubectl cordon &lt;node name&gt;</code></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/">Safely
+Drain a Node</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/architecture/nodes/#manual-node-administration">Manual
+Node administration</a></p>
+<p>Marking a node as unschedulable prevents the scheduler from placing
+new pods onto that Node but does not affect existing Pods on the
+Node.</p>
+<p>To mark a Node unschedulable, run:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl cordon <span class="variable">$NODENAME</span></span><br></pre></td></tr></table></figure>
+<p>102. The following Docker Compose file is deployed as a stack:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.1&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">app:1.0</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> <span class="string">&quot;curl --fail http://localhost/health || exit 1&quot;</span></span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>Is this statement correct about this health check definition?</p>
+<p>Solution: Health checks test for app health ten seconds apart. If the
+test fails, the container will be restarted three times before it gets
+rescheduled.</p>
+<p><strong>No</strong></p>
+<p>Solution: Health checks test for app health ten seconds apart. Three
+failed health checks transition the container into "unhealthy"
+status.</p>
+<p><strong>Yes</strong></p>
+<p>103. Two pods bear the same label, app: dev.</p>
+<p>Will a label selector matching app: dev match both of these pods?</p>
+<p>A. Yes, as long as all the containers in those pods are passing their
+livenessProbes and readinessProbes.</p>
+<p>B. Yes, if both pods were pre-existing when the label selector was
+declared.</p>
+<p><strong>C. Yes, if the pods are in the same Kubernetes namespace as
+the object bearing the label selector.</strong></p>
+<p>D. Yes, if the pods are in the same Kubernetes namespace as the
+object bearing the label selector and both pods were pre existing when
+the label selector was declared.</p>
+<p>106. When using the Docker client to push an image to a registry,
+what environment variable is used to instruct the client to perform
+signing of the image?</p>
+<p><strong>A. DOCKER_CONTENT_TRUST=1</strong></p>
+<p>B. DOCKER_IMAGE_SIGN=1</p>
+<p>C. DOCKER_PUSH_SIGN=1</p>
+<p>D. NOTARY_ENABLE=1</p>
+<p>107. Which statement is correct about cluster management in Docker
+Enterprise Edition 3.x?</p>
+<p>A. Clusters can contain Windows 10 and Windows Server 2016 only.</p>
+<p><strong>B. Clusters can contain Linux, Windows Server 2016 and 2019,
+and Linux on IBM z Systems.</strong></p>
+<p>C. Clusters can contain Linux only.</p>
+<p>D. Clusters can contain Linux and Windows Server 2008 R2 only.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docker-docs.netlify.app/ee/supported-platforms/#supported-platforms">Supported
+platforms</a></p>
+<p>108. Which of the following statements is true about secrets?</p>
+<p>A. Secrets can be created from any node in the cluster.</p>
+<p>B. Secrets can be modified after they are created.</p>
+<p>C. Secret are stored unencrypted on manager nodes.</p>
+<p><strong>D. Secrets can be created using standard input (STDIN) and a
+file.</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/swarm/secrets/">Manage
+sensitive data with Docker secrets</a></p>
+<p>109. Will this Linux kernel facility limit a Docker container's
+access to host resources, such as CPU or memory?</p>
+<p>Solution: seccomp</p>
+<p><strong>No</strong></p>
+<p>Solution: cgroups</p>
+<p><strong>Yes</strong></p>
+<p>Solution: namespaces</p>
+<p><strong>No</strong></p>
+<p>114. What is the docker command to setup a swarm?</p>
+<p><strong>A. docker swarm init</strong></p>
+<p>B. docker swarm create</p>
+<p>C. docker init swarm</p>
+<p>D. docker create swarm</p>
+<p>116. A service "wordpress" is running using a password string to
+connect to a non-Dockerized database service. The password string is
+passed into the "wordpress" service as a Docker secret. Per security
+policy, the password on the database was changed. Identity the correct
+sequence of steps to rotate the secret from the old password to the new
+password.</p>
+<p>A. Create a new docker secret with the new password. Trigger a
+rolling secret update by using the "docker secret update" command.</p>
+<p>B. Trigger an update to the service by using
+<code>docker service update --secret=&lt;new password&gt;</code>.</p>
+<p>C. Create a new docker secret with the new password. Remove the
+existing service using "docker service rm". Start a new service with the
+new secret using <code>--secret=&lt;new password&gt;</code>.</p>
+<p><strong>D. Create a new docker secret with a new password. Trigger a
+rolling update of the "wordpress" service, by using "--secret-rm" &amp;
+"--secret-add" to remove the old secret and add the updated
+secret.</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_update/#add-or-remove-secrets">Add
+or remove secrets</a></p>
+<p>Use the <code>--secret-add</code> or <code>--secret-rm</code> options
+add or remove a service’s secrets.</p>
+<p>119. From a DevOps process standpoint, it is best practice to keep
+changes to an application in version control. Which of the following
+will allow changes to a docker image to be stored in a version control
+system?</p>
+<p><strong>A. docker commit</strong></p>
+<p>B. docker save</p>
+<p>C. A docker-compose.yml file</p>
+<p>D. A dockerfile</p>
+<p>121. What is the difference between a resource limit and a resource
+reservation when scheduling services?</p>
+<p>A. A resource limit and a resource reservation can be used
+interchangeably.</p>
+<p>B. A resource limit is a soft limit for your service, while a
+reservation is hard limit and the docker engine will do its best to keep
+your service at the limit.</p>
+<p>C. A resource limit is used to find a host with adequate resources
+for scheduling a hard limit for your service, while a reservation is
+hard limit for your service.</p>
+<p><strong>D. A resource limit is hard limit for your service, while a
+reservation is used to find a host with adequate resources for
+scheduling.</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/service_create/#specify-memory-requirements-and-constraints-for-a-service---reserve-memory-and---limit-memory">Specify
+memory requirements and constraints for a service (--reserve-memory and
+--limit-memory)</a></p>
+<p>If your service needs a minimum amount of memory in order to run
+correctly, you can use <code>--reserve-memory</code> to specify that the
+service should only be scheduled on a node with this much memory
+available to reserve.</p>
+<p>After a task is scheduled and running, <code>--reserve-memory</code>
+does not enforce a memory limit. Use <code>--limit-memory</code> to
+ensure that a task uses no more than a given amount of memory on a
+node.</p>
+<p>124. Which statement is true?</p>
+<p>A. CMD shell format uses this form ["param", param", "param"].</p>
+<p>B. ENTRYPOINT cannot be used in conjuction with CMD.</p>
+<p><strong>C. CMD is used to run the software is the image along with
+any arguments.</strong></p>
+<p>D. ENTRYPOINT cannot be overriden in the "docker container run"
+command.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/#cmd">CMD</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/#entrypoint">ENTRYPOINT</a></p>
+<p>125. One of several containers in a pod is marked as unhealthy after
+failing its livenessProbe many times. Is this the action taken by the
+orchestrator to fix the unhealthy container?</p>
+<p>Solution: Kubernetes automatically triggers a user-defined script to
+attempt to fix the unhealthy container.</p>
+<p><strong>No</strong></p>
+<p>Solution: The unhealthy container is restarted.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: The controller managing the pod is autoscaled back to
+delete the unhealthy pod and alleviate load.</p>
+<p><strong>No</strong></p>
+<p>127. Which of the following commands starts a Redis container and
+configures it to always restart unless it is explicitly stopped or
+Docker is restarted?</p>
+<p>A. "docker run -d --restart-policy unless-stopped redis"</p>
+<p>B. "docker run -d --restart omit-stopped redis"</p>
+<p><strong>C. "docker run -d --restart unless-stopped
+redis"</strong></p>
+<p>D. "docker run -d --failure omit-stopped redis"</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart">Restart
+policies (--restart)</a></p>
+<p><code>on-failure[:max-retries]</code></p>
+<p>Restart only if the container exits with a non-zero exit status.</p>
+<p><code>unless-stopped</code></p>
+<p>Restart the container unless it is explicitly stopped or Docker
+itself is stopped or restarted.</p>
+<p><code>always</code></p>
+<p>Always restart the container regardless of the exit status. When you
+specify always, the Docker daemon will try to restart the container
+indefinitely. The container will also always start on daemon startup,
+regardless of the current state of the container.</p>
+<p>130. Which statement is true about DTR garbage collection?</p>
+<p><strong>A. Garbage collection removes unreferenced image layers from
+DTR's backend storage.</strong></p>
+<p>B. Garbage collection removes exited containers from cluster
+nodes.</p>
+<p>C. Garbage collection removes DTR images that are older than a
+configurable of days.</p>
+<p>D. Garbage collection removes unused volumes from cluster nodes.</p>
+<p>133. What is the difference between the ADD and COPY dockerfile
+instructions? (choose two.)</p>
+<p><strong>A. ADD supports compression format handling while COPY does
+not.</strong></p>
+<p>B. COPY supports regular expression handling while ADD does not.</p>
+<p>C. COPY supports compression format handling while ADD does not.</p>
+<p><strong>D. ADD support remote URL handling while COPY does
+not.</strong></p>
+<p>E. ADD supports regular expression handling while COPY does not.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy">ADD
+or COPY</a></p>
+<p>135. Some Docker images take time to build through a Continuous
+Integration environment. You want to speed up builds and take advantage
+of build caching.</p>
+<p>Where should the most frequently changed part of a Docker image be
+placed in a Dockerfile?</p>
+<p><strong>A. At the bottom of the Dockerfile.</strong></p>
+<p>B. After the FROM directive.</p>
+<p>C. At the top of the Dockerfile.</p>
+<p>D. In the ENTRYPOINT directive.</p>
+<p>137. What service mode is used to deploy a single task of a service
+to each node?</p>
+<p>A. replicated</p>
+<p>B. spread</p>
+<p>C. universal</p>
+<p>D. distributed</p>
+<p><strong>E. global</strong></p>
+<p>140. A server is running low on disk space. What command can be used
+to check the disk usage of images, containers, and volumes for Docker
+engine?</p>
+<p><strong>A. "docker system df"</strong></p>
+<p>B. "docker system prune"</p>
+<p>C. "docker system free"</p>
+<p>D. "docker system ps"</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/system_df/">docker
+system df</a></p>
+<p>145. What behavior is expected when a service is created with the
+following command:</p>
+<p>"docker service create --publish 8080:80 nginx"</p>
+<p><strong>A. All nodes in the cluster will listen on port 8080 and
+forward to port 80 in the container.</strong></p>
+<p>B. Only a single node in the cluster will listen on port 8080 and
+forward to port 80 in the container.</p>
+<p>C. All nodes in the cluster will listen on port 80 and forward to
+port 8080 in the container.</p>
+<p>D. Only a single node in the cluster will listen on port 80 and
+forward to port 8080 in the container.</p>
+<p>146. Which of the following constitutes a production-ready
+devicemapper configuration for the Docker engine?</p>
+<p>A. Create a volume group in devicemapper and utilize the
+"--dm.thinpooldev" Docker daemon option, specifying the volume
+group.</p>
+<p>B. Format a partition with xfs and mount it at "/var/lib/docker".</p>
+<p><strong>C. Utilize the "--storage-opt dm.directlvm_device" Docker
+daemon option, specifying a block device.</strong></p>
+<p>D. Nothing, devicemapper comes ready for production usage out of the
+box.</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.docker.com/storage/storagedriver/device-mapper-driver/#configure-direct-lvm-mode-for-production">Configure
+direct-lvm mode for production</a></p>
+<p>152. Which networking drivers allow you to enable multi-host network
+connectivity between containers?</p>
+<p><strong>A. macvlan, ipvlan, and overlay</strong></p>
+<p>B. bridge, user-defined, host</p>
+<p>C. bridge, macvlan, ipvlan, overlay</p>
+<p>D. host, macvlan, overlay, user-defined</p>
+<p>154. Which of these swarm manager configurations will cause the
+cluster to be in a lost quorum state?</p>
+<p><strong>A. 4 managers of which 2 are healthy.</strong></p>
+<p>B. 1 manager of which 1 is healthy.</p>
+<p>C. 3 managers of which 2 are healthy.</p>
+<p>D. 5 managers of which 3 are healthy.</p>
+<p>155. You add a new user to the engineering organization in DTR.</p>
+<p>Will this action grant them read/write access to the engineering/api
+repository?</p>
+<p>Solution: Add the user directly to the list of users with read/write
+access under the repository's Permissions tab.</p>
+<p><strong>Yes</strong></p>
+<p>Solution: Add them to a team in the engineering organization that has
+read/write access to the engineering/api repository.</p>
+<p><strong>Yes</strong></p>
+<p>156. You set up an automatic pruning policy on a DTR repository to
+prune all images using Apache licenses. What effect does this have on
+images in this repository?</p>
+<p><strong>A. Matching images are untagged once they are older than the
+pruning threshold set in the repository's Settings tab.</strong></p>
+<p>B. Matching images are untagged during the next prune job.</p>
+<p>C. Matching images are deleted during the next prune Job.</p>
+<p>D. Matching images are untagged during the next prune job, and
+subsequently deleted once they are older than the pruning threshold set
+in the repository's Settings tab.</p>
+<p>163. A persistentVolumeClaim (PVC) is created with the specification
+storageClass: "", and size requirements that cannot be satisfied by any
+existing persistentVolume.</p>
+<p>Is this an action Kubernetes takes in this situation?</p>
+<p>Solution: The PVC remains unbound until a persistentVolume that
+matches all requirements of the PVC becomes available.</p>
+<p><strong>Yes</strong></p>
+<p>164. Can this set of commands identify the published port(s) for a
+container?</p>
+<p>Solution: "docker container inspect", "docker port"</p>
+<p><strong>Yes</strong></p>
+<p>166. Is this a supported user authentication method for Universal
+Control Plane?</p>
+<p>Solution: PAM</p>
+<p><strong>No</strong></p>
+<p>Docker UCP has its own built-in authentication mechanism and
+integrates with LDAP services. It also has role-based access control
+(RBAC), so that you can control who can access and make changes to your
+cluster and applications.</p>
+<p>169. Will a DTR security scan detect this?</p>
+<p>Solution: licenses for known third party binary components.</p>
+<p><strong>No</strong></p>
+<p>170. Is this statement correct?</p>
+<p>Solution: A Dockerfile provides instructions for building a Docker
+image.</p>
+<p><strong>Yes</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/642ddb75.html" rel="prev" title="Certified Kubernetes Application Developer Exam Preparation">
+      <i class="fa fa-chevron-left"></i> Certified Kubernetes Application Developer Exam Preparation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/2d0c1f2.html" rel="next" title="JPA @OneToOne 避免 N+1 SELECT">
+      JPA @OneToOne 避免 N+1 SELECT <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

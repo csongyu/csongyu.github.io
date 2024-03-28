@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="配置容器使其自动启动（A卷） 利用注册服务器上的 rsyslog 镜像，创建一个名为 logserver 的容器 面向 wallah 用户，配置一个 systemd 服务 该服务命名为 container-logserver ，并在系统重启时自动启动，无需干预   为容器配置持久存储（A卷） 通过以下方式扩展上一个任务的服务 配置主机系统的 journald 日志以在系统重启后保留数据，并重新启">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RHCSA (EX200) - 配置容器使其自动启动（A卷 &amp; B卷） &amp; 为容器配置持久存储（A卷）">
+<meta property="og:url" content="https://csongyu.github.io/posts/62c73d45.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="配置容器使其自动启动（A卷） 利用注册服务器上的 rsyslog 镜像，创建一个名为 logserver 的容器 面向 wallah 用户，配置一个 systemd 服务 该服务命名为 container-logserver ，并在系统重启时自动启动，无需干预   为容器配置持久存储（A卷） 通过以下方式扩展上一个任务的服务 配置主机系统的 journald 日志以在系统重启后保留数据，并重新启">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-06-05T19:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-10T13:46:59.381Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/62c73d45.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>RHCSA (EX200) - 配置容器使其自动启动（A卷 & B卷） & 为容器配置持久存储（A卷） | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/62c73d45.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RHCSA (EX200) - 配置容器使其自动启动（A卷 & B卷） & 为容器配置持久存储（A卷）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-06 03:00:00" itemprop="dateCreated datePublished" datetime="2023-06-06T03:00:00+08:00">2023-06-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><strong>配置容器使其自动启动（A卷）</strong></p>
+<p>利用注册服务器上的 <code>rsyslog</code> 镜像，创建一个名为
+<code>logserver</code> 的容器</p>
+<p>面向 <code>wallah</code> 用户，配置一个 systemd 服务</p>
+<p>该服务命名为 <code>container-logserver</code>
+，并在系统重启时自动启动，无需干预</p>
+</blockquote>
+<blockquote>
+<p><strong>为容器配置持久存储（A卷）</strong></p>
+<p>通过以下方式扩展上一个任务的服务</p>
+<p>配置主机系统的 journald
+日志以在系统重启后保留数据，并重新启动日志记录服务</p>
+<p>将主机 <code>/var/log/journal</code> 目录下任何以
+<code>*.journal</code> 的文件复制到
+<code>/home/wallah/container_logfile</code> 中</p>
+<p>将服务配置为在启动时自动将
+<code>/home/wallah/container_logfile</code> 挂载到容器中的
+<code>/var/log/journal</code> 下</p>
+</blockquote>
+<blockquote>
+<p><strong>配置容器使其自动启动（B卷）</strong></p>
+<p>利用注册服务器上的 <code>rsyslog</code> 镜像，创建一个名为
+<code>logger</code> 的容器</p>
+<p>面向 <code>wallah</code> 用户，配置一个 systemd 服务</p>
+<p>该服务命名为
+<code>container-logger</code>，并在系统重启时自动启动，无需干预</p>
+<p>将服务配置为在启动时自动将 <code>/home/wallah/var_log</code>
+挂载到容器中的 <code>/var/log</code> 下</p>
+<p>在容器中执行命令
+<code>podman exec logger logger -p authpriv.info SUIBIAN</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# man -k journal</span><br><span class="line">journald.conf (5)    - Journal service configuration files</span><br><span class="line">systemd-journald.service (8) - Journal service</span><br><span class="line">...</span><br><span class="line">[root@node1 ~]# systemctl is-enabled systemd-journald.service; systemctl is-active systemd-journald.service </span><br><span class="line">static</span><br><span class="line">active</span><br><span class="line">[root@node1 ~]# man journald.conf</span><br><span class="line">[root@node1 ~]# vim /etc/systemd/journald.conf </span><br><span class="line">[Journal]</span><br><span class="line">Storage=persistent</span><br><span class="line">[root@node1 ~]# systemctl restart systemd-journald.service</span><br><span class="line">[root@node1 ~]# ls /var/log/journal/</span><br><span class="line">f874df04639f474cb0a9881041f4f7d4</span><br><span class="line">[root@node1 ~]# ls -ld /home/wallah/container_logfile/</span><br><span class="line">drwxr-xr-x. 2 wallah wallah 6 Feb 19 11:56 /home/wallah/container_logfile/</span><br><span class="line">[root@node1 ~]# cp /var/log/journal/*/*.journal /home/wallah/container_logfile/</span><br><span class="line">[root@node1 ~]# chown -R wallah:wallah /home/wallah/container_logfile/</span><br><span class="line">[root@node1 ~]# ls -l /home/wallah/container_logfile/</span><br><span class="line">total 8192</span><br><span class="line">-rw-r-----. 1 wallah wallah 8388608 Feb 19 12:14 system.journal</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# ssh wallah@localhost </span><br><span class="line">[wallah@node1 ~]$ podman login registry.domain250.example.com</span><br><span class="line">Username: admin</span><br><span class="line">Password: </span><br><span class="line">Login Succeeded!</span><br><span class="line">[wallah@node1 ~]$ podman search registry.domain250.example.com/</span><br><span class="line">INDEX         NAME                                               DESCRIPTION   STARS   OFFICIAL   AUTOMATED</span><br><span class="line">example.com   registry.domain250.example.com/rhel8/mariadb-103                 0  </span><br><span class="line">example.com   registry.domain250.example.com/rhel8/httpd-24                    0  </span><br><span class="line">example.com   registry.domain250.example.com/library/nginx                     0  </span><br><span class="line">example.com   registry.domain250.example.com/ubi7/ubi                          0  </span><br><span class="line">example.com   registry.domain250.example.com/ubi8/ubi                          0  </span><br><span class="line">example.com   registry.domain250.example.com/rhel8/rsyslog                     0  </span><br><span class="line">[wallah@node1 ~]$ podman pull registry.domain250.example.com/rhel8/rsyslog</span><br><span class="line">Trying to pull registry.domain250.example.com/rhel8/rsyslog...</span><br><span class="line">Getting image source signatures</span><br><span class="line">Copying blob 68a85f8ea16b done  </span><br><span class="line">Copying blob 864ad45e3300 done  </span><br><span class="line">Copying blob 5bbc26867c5f done  </span><br><span class="line">Copying blob e36a18df25d4 done  </span><br><span class="line">Copying config 8411a1edd4 done  </span><br><span class="line">Writing manifest to image destination</span><br><span class="line">Storing signatures</span><br><span class="line">8411a1edd4bb97aeae6bf9124cb00c66ff577ae68848e50704e9157263127aeb</span><br><span class="line">[wallah@node1 ~]$ podman run -d --name logserver -v /home/wallah/container_logfile:/var/log/journal:Z registry.domain250.example.com/rhel8/rsyslog</span><br><span class="line">9b4395be4aeb8aeeaf22dfb1503c72a6f9541cc815738adff94c048bbb7c9540</span><br><span class="line">[wallah@node1 ~]$ podman exec logserver ls -l /var/log/journal</span><br><span class="line">total 8192</span><br><span class="line">-rw-r-----    1 root     root       8388608 Feb 19 17:17 system.journal</span><br><span class="line">[wallah@node1 ~]$ podman stop logserver </span><br><span class="line">9b4395be4aeb8aeeaf22dfb1503c72a6f9541cc815738adff94c048bbb7c9540</span><br><span class="line">[wallah@node1 ~]$ </span><br><span class="line">[wallah@node1 ~]$ man -k systemd</span><br><span class="line">...</span><br><span class="line">loginctl (1)         - Control the systemd login manager</span><br><span class="line">[wallah@node1 ~]$ loginctl enable-linger</span><br><span class="line">[wallah@node1 ~]$ loginctl show-user wallah </span><br><span class="line">...</span><br><span class="line">Linger=yes</span><br><span class="line">[wallah@node1 ~]$ man systemd.unit</span><br><span class="line">[wallah@node1 ~]$ mkdir -p ~/.config/systemd/user/</span><br><span class="line">[wallah@node1 ~]$ cd ~/.config/systemd/user/</span><br><span class="line">[wallah@node1 user]$ podman generate systemd --name logserver --files</span><br><span class="line">/home/wallah/.config/systemd/user/container-logserver.service</span><br><span class="line">[wallah@node1 user]$ systemctl --user enable --now container-logserver.service</span><br><span class="line">Created symlink /home/wallah/.config/systemd/user/multi-user.target.wants/container-logserver.service → /home/wallah/.config/systemd/user/container-logserver.service.</span><br><span class="line">Created symlink /home/wallah/.config/systemd/user/default.target.wants/container-logserver.service → /home/wallah/.config/systemd/user/container-logserver.service.</span><br><span class="line">[wallah@node1 user]$ systemctl --user is-active container-logserver.service; systemctl --user is-enabled container-logserver.service </span><br><span class="line">active</span><br><span class="line">enabled</span><br><span class="line">[wallah@node1 ~]$ podman ps</span><br><span class="line">CONTAINER ID  IMAGE                                                COMMAND  CREATED             STATUS                 PORTS  NAMES</span><br><span class="line">9b4395be4aeb  registry.domain250.example.com/rhel8/rsyslog:latest           5 minutes ago       Up About a minute ago         logserver</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[wallah@node1 ~]$ ls -ld /home/wallah/var_log/</span><br><span class="line">drwxr-xr-x. 2 wallah wallah 6 Feb 19 11:56 /home/wallah/var_log/</span><br><span class="line">[wallah@node1 ~]$ ls -l /home/wallah/var_log/</span><br><span class="line">total 0</span><br><span class="line">[wallah@node1 ~]$ podman run -d --name logger -v /home/wallah/var_log:/var/log:Z registry.domain250.example.com/rhel8/rsyslog</span><br><span class="line">e3ce1a94d1ede3f69a3280b4112c0b5fdad70f9c70784dc8235aebebe9b86094</span><br><span class="line">[wallah@node1 ~]$ podman stop logger </span><br><span class="line">e3ce1a94d1ede3f69a3280b4112c0b5fdad70f9c70784dc8235aebebe9b86094</span><br><span class="line">[wallah@node1 ~]$ cd ~/.config/systemd/user/</span><br><span class="line">[wallah@node1 user]$ podman generate systemd --name logger --files</span><br><span class="line">/home/wallah/.config/systemd/user/container-logger.service</span><br><span class="line">[wallah@node1 user]$ systemctl --user enable --now container-logger.service</span><br><span class="line">Created symlink /home/wallah/.config/systemd/user/multi-user.target.wants/container-logger.service → /home/wallah/.config/systemd/user/container-logger.service.</span><br><span class="line">Created symlink /home/wallah/.config/systemd/user/default.target.wants/container-logger.service → /home/wallah/.config/systemd/user/container-logger.service.</span><br><span class="line">[wallah@node1 user]$ podman ps</span><br><span class="line">CONTAINER ID  IMAGE                                                COMMAND  CREATED        STATUS            PORTS  NAMES</span><br><span class="line">e3ce1a94d1ed  registry.domain250.example.com/rhel8/rsyslog:latest           2 minutes ago  Up 3 seconds ago         logger</span><br><span class="line">...</span><br><span class="line">[wallah@node1 user]$ podman exec logger logger -p authpriv.info SUIBIAN</span><br><span class="line">[wallah@node1 user]$ ls -lZ /home/wallah/var_log/</span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--. 1 wallah wallah system_u:object_r:container_file_t:s0:c593,c702 666 Feb 19 20:36 messages</span><br><span class="line">-rw-r--r--. 1 wallah wallah system_u:object_r:container_file_t:s0:c593,c702  60 Feb 19 20:36 secure</span><br><span class="line">[wallah@node1 user]$ cat /home/wallah/var_log/secure </span><br><span class="line">2023-02-20T01:36:46.475110+00:00 e3ce1a94d1ed root: SUIBIAN</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>/etc/systemd/journald.conf 文件中的 Storage
+参数决定系统日志以易失性方式存储，还是在系统重启后持久保留。按照如下所示，将该参数设置为
+persistent、volatile 或 auto：</p>
+<p>persistent：将日志存储在 /var/log/journal
+目录中，这可在系统重启后持久保留。</p>
+<p>如果 /var/log/journal 目录不存在，systemd-journald 服务会创建它。</p>
+<p>volatile：将日志存储在易失性 /run/log/journal 目录中。</p>
+<p>因为 /run
+文件系统是临时的，仅存在于运行时内存中，存储在其中的数据（包括系统日志）不会在系统重启后持久保留。</p>
+<p>auto：rsyslog 决定要使用持久存储还是易失性存储。如果 /var/log/journal
+目录存在，那么 rsyslog 会使用持久存储，否则使用易失性存储。</p>
+<p>如果未设置 Storage 参数，此为默认操作。</p>
+</blockquote>
+<blockquote>
+<p>--volume host_dir:container_dir:Z</p>
+<p>借助 Z 选项，Podman 会自动将 SELinux container_file_t
+上下文类型应用</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/e8a2dc66.html" rel="prev" title="RHCSA (EX200) - 创建存档">
+      <i class="fa fa-chevron-left"></i> RHCSA (EX200) - 创建存档
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/a0ed7d9d.html" rel="next" title="RHCSA (EX200) - 容器 nginx（附加题）">
+      RHCSA (EX200) - 容器 nginx（附加题） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

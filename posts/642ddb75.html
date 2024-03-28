@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Practice Pods 1234kubectl create namespace -hkubectl config set-context --current --namespace&#x3D;ckadkubectl run -h# --rm&#x3D;false: If true, delete resources created in this command for attached containers.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Certified Kubernetes Application Developer Exam Preparation">
+<meta property="og:url" content="https://csongyu.github.io/posts/642ddb75.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="Practice Pods 1234kubectl create namespace -hkubectl config set-context --current --namespace&#x3D;ckadkubectl run -h# --rm&#x3D;false: If true, delete resources created in this command for attached containers.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-16T05:15:10.284Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/642ddb75.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Certified Kubernetes Application Developer Exam Preparation | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/642ddb75.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Certified Kubernetes Application Developer Exam Preparation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-10 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-10T00:00:00+08:00">2022-04-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="practice">Practice</h3>
+<p><strong>Pods</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl create namespace -h</span><br><span class="line">kubectl config set-context --current --namespace=ckad</span><br><span class="line">kubectl run -h</span><br><span class="line"><span class="comment"># --rm=false: If true, delete resources created in this command for attached containers.</span></span><br></pre></td></tr></table></figure>
+<p><strong>ConfigMaps</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">Configure
+a Pod to Use a ConfigMap</a></p>
+<blockquote>
+<p>Use <code>envFrom</code> to define all of the ConfigMap's data as
+container environment variables. The key from the ConfigMap becomes the
+environment variable name in the Pod.</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl create configmap -h</span><br><span class="line"><span class="comment"># --from-env-file</span></span><br><span class="line"><span class="comment"># Specify the path to a file to read lines of key=val pairs to create a configmap.</span></span><br><span class="line">kubectl run -h</span><br><span class="line"><span class="comment"># --dry-run=&#x27;none&#x27;: Must be &quot;none&quot;, &quot;server&quot;, or &quot;client&quot;. If client strategy, only print the object that would be sent, without sending it.</span></span><br></pre></td></tr></table></figure>
+<p><strong>Secrets</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-environment-variables">Using
+Secrets as environment variables</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic -h</span><br><span class="line"><span class="comment"># --from-file</span></span><br><span class="line"><span class="comment"># Specifying a directory will iterate each named file in the directory that is a valid secret key.</span></span><br></pre></td></tr></table></figure>
+<p><strong>SecurityContext</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Configure
+a Security Context for a Pod or Container</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl explain Pod.spec.securityContext</span><br><span class="line"><span class="comment"># fsGroup</span></span><br><span class="line"><span class="comment"># A special supplemental group that applies to all containers in a pod. Some volume types allow the Kubelet to change the ownership of that volume to be owned by the pod.</span></span><br></pre></td></tr></table></figure>
+<p><strong>Resource Quotas</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/policy/resource-quotas/">Resource
+Quotas</a></p>
+<blockquote>
+<p>A resource quota, defined by a ResourceQuota object, provides
+constraints that limit aggregate resource consumption per namespace. It
+can limit the quantity of objects that can be created in a namespace by
+type, as well as the total amount of compute resources that may be
+consumed by resources in that namespace.</p>
+</blockquote>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">Resource
+Management for Pods and Containers</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create quota -h</span><br></pre></td></tr></table></figure>
+<p><strong>Service Accounts</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">Configure
+Service Accounts for Pods</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl explain Pod.spec</span><br><span class="line"><span class="comment"># serviceAccountName</span></span><br><span class="line"><span class="comment"># ServiceAccountName is the name of the ServiceAccount to use to run this pod.</span></span><br></pre></td></tr></table></figure>
+<p><strong>Readiness and Liveness Probes</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">Configure
+Liveness, Readiness and Startup Probes</a></p>
+<p><strong>Labels</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Labels
+and Selectors</a></p>
+<blockquote>
+<p><em>Set-based</em> label requirements allow filtering keys according
+to a set of values. Three kinds of operators are supported:
+<code>in</code>,<code>notin</code> and <code>exists</code> (only the key
+identifier).</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label -h</span><br></pre></td></tr></table></figure>
+<p><strong>Secrets</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod">Using
+Secrets as files from a Pod</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment -h</span><br></pre></td></tr></table></figure>
+<p><strong>Deployments</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment">Rolling
+Back a Deployment</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kubectl <span class="built_in">set</span> image -h</span><br><span class="line">kubectl rollout <span class="built_in">history</span> -h</span><br><span class="line"><span class="comment"># --revision</span></span><br><span class="line"><span class="comment"># See the details, including podTemplate of the revision specified</span></span><br><span class="line">kubectl scale -h</span><br><span class="line">kubectl rollout undo -h</span><br></pre></td></tr></table></figure>
+<p><strong>CronJob</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create cronjob -h</span><br></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#cron-schedule-syntax">Cron
+schedule syntax</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/#jobs-history-limits">Jobs
+History Limits</a></p>
+<p><strong>Service</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types">Publishing
+Services (ServiceTypes)</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --rm</span></span><br><span class="line">kubectl run &lt;pod name&gt; --image=busybox -it --<span class="built_in">rm</span> --restart=Never -- &lt;<span class="built_in">command</span>&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>Network Policies</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/network-policies/#networkpolicy-resource">The
+NetworkPolicy resource</a></p>
+<blockquote>
+<p><strong>podSelector</strong>: Each NetworkPolicy includes a
+<code>podSelector</code> which selects the grouping of pods to which the
+policy applies. An empty <code>podSelector</code> selects all pods in
+the namespace.</p>
+</blockquote>
+<p><strong>Init Containers</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/">Configure
+Pod Initialization</a></p>
+<p><strong>Helm</strong></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/intro/install/">Installing Helm</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_completion/">Helm
+Completion</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_repo/">Helm Repo</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">helm repo add stable https://charts.helm.sh/stable</span><br><span class="line">helm repo add bitnami https://charts.bitnami.com/bitnami</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_search/">Helm Search</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_install/">Helm
+Install</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_list/">Helm List</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_upgrade/">Helm
+Upgrade</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_show/">Helm Show</a></p>
+<p><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_uninstall/">Helm
+Uninstall</a></p>
+<h3 id="exam-simulator">Exam Simulator</h3>
+<p><strong>Question 1 | Namespaces</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/kubectl/#output-options">Output
+options</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get -h</span><br><span class="line"><span class="comment"># -o name Print only the resource name and nothing else.</span></span><br></pre></td></tr></table></figure>
+<p><strong>Question 3 | Job</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/controllers/job/#parallel-jobs">Parallel
+execution for Jobs</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl explain Job.spec.completions</span><br><span class="line">kubectl explain Job.spec.parallelism</span><br></pre></td></tr></table></figure>
+<p><strong>Question 4 | Helm Management</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">helm list --namespace [NAMESPACE]</span><br><span class="line"><span class="comment"># -a, --all</span></span><br><span class="line"><span class="comment"># show all releases without any filter applied</span></span><br><span class="line">helm uninstall [RELEASE_NAME] --namespace [NAMESPACE]</span><br><span class="line"><span class="comment"># upgrade</span></span><br><span class="line">helm repo list</span><br><span class="line">helm repo update</span><br><span class="line">helm search repo [keyword]</span><br><span class="line">helm upgrade [RELEASE] [CHART] --namespace [NAMESPACE]</span><br><span class="line"><span class="comment"># install</span></span><br><span class="line">helm show values [CHART]</span><br><span class="line">helm install [NAME] [CHART] --<span class="built_in">set</span> replicaCount=[n] --namespace [NAMESPACE]</span><br></pre></td></tr></table></figure>
+<p><strong>Question 5 | ServiceAccount, Secret</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># base64 encoded token</span></span><br><span class="line">kubectl get secrets [NAME] -o yaml</span><br><span class="line"><span class="comment"># base64 decoded token</span></span><br><span class="line">kubectl describe secrets [NAME]</span><br></pre></td></tr></table></figure>
+<p><strong>Question 11 | Working with Containers</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker build -t NAME[:TAG] -t NAME[:TAG] .</span><br><span class="line">docker push NAME[:TAG]</span><br><span class="line"></span><br><span class="line"><span class="comment"># podman</span></span><br><span class="line">podman build -t NAME[:TAG]</span><br><span class="line">podman push NAME[:TAG]</span><br><span class="line">podman run -d --name NAME IMAGE</span><br><span class="line">podman ps</span><br><span class="line">podman logs CONTAINER</span><br></pre></td></tr></table></figure>
+<p><strong>Question 13 | Storage, StorageClass, PVC</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/storage/storage-classes/">Storage
+Classes</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/">Dynamic
+Volume Provisioning</a></p>
+<p><strong>Question 19 | Service ClusterIP to NodePort</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport">Type
+NodePort</a></p>
+<p><strong>Question 20 | NetworkPolicy</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">NetworkPolicy</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;name&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">&lt;namespace&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">podSelector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="string">&lt;key&gt;:</span> <span class="string">&lt;value&gt;</span></span><br><span class="line">  <span class="attr">policyTypes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">Egress</span></span><br><span class="line">  <span class="attr">egress:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">to:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">podSelector:</span></span><br><span class="line">        <span class="attr">matchLabels:</span></span><br><span class="line">          <span class="string">&lt;key&gt;:</span> <span class="string">&lt;value&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">ports:</span> <span class="comment"># 2nd egress rule</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="string">&lt;port&gt;</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">UDP</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="string">&lt;port&gt;</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+<p>Notice that we specify two egress rules in the yaml above. If we
+specify multiple egress rules then these are connected using a logical
+OR.</p>
+<p><strong>Question 22 | Labels, Annotations</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label pods -l <span class="string">&quot;KEY in (KEY_1,KEY_2)&quot;</span> KEY_3=VAL_3 ... KEY_N=VAL_N</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/5ea95150.html" rel="prev" title="Certified Kubernetes Administrator Exam Preparation">
+      <i class="fa fa-chevron-left"></i> Certified Kubernetes Administrator Exam Preparation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/d95d1ed0.html" rel="next" title="Docker Certified Associate Exam Preparation">
+      Docker Certified Associate Exam Preparation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#practice"><span class="nav-number">1.</span> <span class="nav-text">Practice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exam-simulator"><span class="nav-number">2.</span> <span class="nav-text">Exam Simulator</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

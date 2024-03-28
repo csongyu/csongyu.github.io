@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Scenario HikariCP + mariadb-java-client + MySQL Although the network or database has been restored, the application will not restore itself, only after a restart. 1java.sql.SQLTransientConnectionExcep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Do we need to configure socketTimeout when using HikariCP">
+<meta property="og:url" content="https://csongyu.github.io/posts/4e2102a6.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="Scenario HikariCP + mariadb-java-client + MySQL Although the network or database has been restored, the application will not restore itself, only after a restart. 1java.sql.SQLTransientConnectionExcep">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-13T15:54:22.614Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/4e2102a6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Do we need to configure socketTimeout when using HikariCP | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/4e2102a6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Do we need to configure socketTimeout when using HikariCP
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-23 00:00:00" itemprop="dateCreated datePublished" datetime="2023-02-23T00:00:00+08:00">2023-02-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="scenario">Scenario</h3>
+<p><code>HikariCP</code> + <code>mariadb-java-client</code> +
+<code>MySQL</code></p>
+<p>Although the network or database has been restored, the application
+will not restore itself, only after a restart.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.sql.SQLTransientConnectionException: HikariPool-<span class="number">1</span> - Connection is not available, request timed out after 30000ms.</span><br></pre></td></tr></table></figure>
+<h3 id="thread-dump">Thread Dump</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;HikariPool-1 connection adder&quot;</span> ... runnable ...</span><br><span class="line">   java.lang.Thread.State: RUNNABLE</span><br><span class="line">    at java.net.SocketInputStream.socketRead0(Native Method)</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;xxx_QuartzSchedulerThread&quot;</span> ... waiting on condition ...</span><br><span class="line">   java.lang.Thread.State: TIMED_WAITING (parking)</span><br><span class="line">    ...</span><br><span class="line">    at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)</span><br><span class="line">    at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)</span><br><span class="line">    at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:173)</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;HikariPool-1 housekeeper&quot;</span> ... waiting on condition ...</span><br><span class="line">   java.lang.Thread.State: TIMED_WAITING (parking)</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+<h3 id="how-hikaricp-creates-connections">How HikariCP creates
+connections</h3>
+<p><code>main</code> thread call stack as follows:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|-com.zaxxer.hikari.HikariDataSource<span class="comment">#getConnection()</span></span><br><span class="line"> |-com.zaxxer.hikari.poolHikariPool<span class="comment">#getConnection(hardTimeout)</span></span><br><span class="line">  |-com.zaxxer.hikari.util.ConcurrentBag<span class="comment">#borrow(timeout, timeUnit)</span></span><br><span class="line">   |-com.zaxxer.hikari.pool.HikariPool<span class="comment">#addBagItem(waiting)</span></span><br></pre></td></tr></table></figure>
+<p><code>addConnectionExecutor</code> is responsible for creating
+connections, but it is a thread pool with only one thread, which means
+creating connections is blocking and needs to be queued.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// com.zaxxer.hikari.pool.HikariPool</span></span><br><span class="line">...</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addBagItem</span><span class="params">(<span class="keyword">final</span> <span class="type">int</span> waiting)</span></span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="type">boolean</span> <span class="variable">shouldAdd</span> <span class="operator">=</span> waiting - addConnectionQueue.size() &gt;= <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">if</span> (shouldAdd) &#123;</span><br><span class="line">         <span class="comment">// corePoolSize=1, maximumPoolSize=1, workQueue=LinkedBlockingQueue</span></span><br><span class="line">         addConnectionExecutor.submit(POOL_ENTRY_CREATOR);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><code>HikariPool-1 connection adder</code> thread call stack as
+follows:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">|-com.zaxxer.hikari.pool.HikariPool.PoolEntryCreator<span class="comment">#call()</span></span><br><span class="line"> |-com.zaxxer.hikari.pool.HikariPool<span class="comment">#createPoolEntry()</span></span><br><span class="line">  |-com.zaxxer.hikari.pool.PoolBase<span class="comment">#newPoolEntry()</span></span><br><span class="line">   |-com.zaxxer.hikari.pool.PoolBase<span class="comment">#newConnection()</span></span><br><span class="line">    |-com.zaxxer.hikari.util.DriverDataSource<span class="comment">#getConnection()</span></span><br><span class="line">     |-org.mariadb.jdbc.Driver<span class="comment">#connect(url, props)</span></span><br><span class="line">      |-org.mariadb.jdbc.MariaDbConnection<span class="comment">#newConnection(urlParser, globalInfo)</span></span><br><span class="line">       |-org.mariadb.jdbc.internal.util.Utils<span class="comment">#retrieveProxy(urlParser, globalInfo)</span></span><br><span class="line">        |-org.mariadb.jdbc.internal.protocol.AbstractConnectProtocol<span class="comment">#connectWithoutProxy()</span></span><br><span class="line">         |-org.mariadb.jdbc.internal.protocol.AbstractConnectProtocol<span class="comment">#createConnection(hostAddress, username)</span></span><br><span class="line">          |-org.mariadb.jdbc.internal.protocol.AbstractConnectProtocol<span class="comment">#createSocket(host, port, options)</span></span><br><span class="line">          |-org.mariadb.jdbc.internal.com.read.ReadInitialHandShakePacket<span class="comment">#ReadInitialHandShakePacket(reader)</span></span><br><span class="line">           |-org.mariadb.jdbc.internal.io.input.StandardPacketInputStream<span class="comment">#getPacket(reUsable)</span></span><br><span class="line">            |-org.mariadb.jdbc.internal.io.input.StandardPacketInputStream<span class="comment">#getPacketArray(reUsable)</span></span><br><span class="line">             |-org.mariadb.jdbc.internal.io.input.ReadAheadBufferedStream<span class="comment">#read(externalBuf, off, len)</span></span><br><span class="line">              |-org.mariadb.jdbc.internal.io.input.ReadAheadBufferedStream<span class="comment">#fillBuffer(minNeededBytes)</span></span><br><span class="line">               |-java.io.FilterInputStream<span class="comment">#read(b, off, len)</span></span><br><span class="line">                |-java.net.SocketInputStream<span class="comment">#read(b, off, length)</span></span><br><span class="line">                 |-java.net.SocketInputStream<span class="comment">#read(b, off, length, timeout)</span></span><br><span class="line">                  |-java.net.SocketInputStream<span class="comment">#socketRead(fd, b, off, len, timeout)</span></span><br><span class="line">                   |-java.net.SocketInputStream<span class="comment">#socketRead0(fd, b, off, len, timeout)</span></span><br></pre></td></tr></table></figure>
+<p><code>org.mariadb.jdbc.internal.protocol.AbstractConnectProtocol#createSocket</code>
+mehtod will establish a TCP connection through
+<code>java.net.Socket</code>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xxx@xxx ~ % lsof -i tcp:3306</span><br><span class="line">COMMAND     PID       USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME</span><br><span class="line">java      10015 chensongyu   95u  IPv6 0xe5897620744b2967      0t0  TCP localhost:64819-&gt;localhost:mysql (ESTABLISHED)</span><br><span class="line">com.docke 69423 chensongyu  115u  IPv6 0xe5897620744c2967      0t0  TCP *:mysql (LISTEN)</span><br><span class="line">com.docke 69423 chensongyu  122u  IPv6 0xe5897620744c3047      0t0  TCP localhost:mysql-&gt;localhost:64819 (ESTABLISHED)</span><br></pre></td></tr></table></figure>
+<p>The default socketTimeout is 0, which means no timeout, and the
+default connectTimeout is 30s.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// org.mariadb.jdbc.internal.protocol.AbstractConnectProtocol</span></span><br><span class="line">...</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Socket <span class="title function_">createSocket</span><span class="params">(<span class="keyword">final</span> String host, <span class="keyword">final</span> <span class="type">int</span> port, <span class="keyword">final</span> Options options)</span></span><br><span class="line">      <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">    Socket socket;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      <span class="comment">// socketTimeout default is zero</span></span><br><span class="line">      <span class="keyword">if</span> (options.socketTimeout != <span class="literal">null</span>) &#123;</span><br><span class="line">        socket.setSoTimeout(options.socketTimeout);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="comment">// connectTimeout default is 30_000ms</span></span><br><span class="line">          socket.connect(sockAddr, options.connectTimeout);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException ioe) &#123;</span><br><span class="line">          <span class="keyword">throw</span> ioe;</span><br><span class="line">        &#125;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>After the connection is established, parse the server greeting
+packet.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// org.mariadb.jdbc.internal.com.read.ReadInitialHandShakePacket</span></span><br><span class="line">...</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">ReadInitialHandShakePacket</span><span class="params">(<span class="keyword">final</span> PacketInputStream reader)</span></span><br><span class="line">      <span class="keyword">throws</span> IOException, SQLException &#123;</span><br><span class="line">    <span class="type">Buffer</span> <span class="variable">buffer</span> <span class="operator">=</span> reader.getPacket(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">if</span> (buffer.getByteAt(<span class="number">0</span>) == ERROR) &#123;</span><br><span class="line">      <span class="type">ErrorPacket</span> <span class="variable">errorPacket</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ErrorPacket</span>(buffer);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">SQLException</span>(errorPacket.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="what-went-wrong">What went wrong</h3>
+<p>Consider the network or database to be unstable at some point, your
+application thread will get stuck in this
+<code>java.net.SocketInputStream#socketRead0()</code> API until it has
+completely read the response data. What's more serious is that
+<code>addConnectionExecutor</code> has only one thread, which will
+prevent the task <code>POOL_ENTRY_CREATOR</code> from creating new
+connections, even if the network or database has returned to normal.</p>
+<h3 id="how-to-fix">How to fix</h3>
+<p>Configure <code>socketTimeout</code> on
+<code>spring.datasource.url</code> property.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mariadb://localhost:3306/xxx?socketTimeout=60000</span></span><br></pre></td></tr></table></figure>
+<h3 id="update">Update</h3>
+<p><a
+target="_blank" rel="noopener" href="https://www.theguardian.com/info/2019/dec/02/faster-postgresql-connection-recovery">Faster
+PostgreSQL connection recovery</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/brettwooldridge/HikariCP/wiki/Rapid-Recovery">Rapid
+Recovery</a></p>
+<blockquote>
+<p>Unacknowledged TCP</p>
+<p>The reason that HikariCP is powerless to recover connections that are
+out of the pool is due to unacknowledged TCP traffic. TCP is a
+synchronous communication scheme that requires "handshaking" from both
+sides of the connection as packets are exchanged (<code>SYN</code> and
+<code>ACK</code> packets).</p>
+<p>When TCP communication is abruptly interrupted, the client
+<em>or</em> server can be left awaiting the acknowledgement of a packet
+that will never come. The connection is therefore "stuck", until an
+operating system level TCP timeout occurs. This can be as long as
+several hours, depending on the operating system TCP stack tuning.</p>
+<p>TCP Timeouts</p>
+<p>In order to avoid this condition, it is imperative that the
+application configures the driver-level TCP <em>socket timeout</em> .
+Each driver differs in how this timeout is set, but nearly all drivers
+support it.</p>
+<p>HikariCP <em>recommends</em> that the driver-level socket timeout be
+set to (at least) 2-3x the longest running SQL transaction, or 30
+seconds, whichever is longer. However, your own recovery time targets
+should determine the appropriate timeout for your application.</p>
+<p>See the specific database sections below for some common
+configurations.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/9580f9e1.html" rel="prev" title="Why does HikariCP default set keepaliveTime as zero as default">
+      <i class="fa fa-chevron-left"></i> Why does HikariCP default set keepaliveTime as zero as default
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/23ce10b9.html" rel="next" title="Add extra CLASSPATH when using the JarLauncher of SpringBoot">
+      Add extra CLASSPATH when using the JarLauncher of SpringBoot <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#scenario"><span class="nav-number">1.</span> <span class="nav-text">Scenario</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#thread-dump"><span class="nav-number">2.</span> <span class="nav-text">Thread Dump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-hikaricp-creates-connections"><span class="nav-number">3.</span> <span class="nav-text">How HikariCP creates
+connections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#what-went-wrong"><span class="nav-number">4.</span> <span class="nav-text">What went wrong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-fix"><span class="nav-number">5.</span> <span class="nav-text">How to fix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update"><span class="nav-number">6.</span> <span class="nav-text">Update</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"csongyu.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":330,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="大家好，我是来自 GPB&amp;W 的 Song Yu，很高兴参加本次云主题分享会。 我在去年通过了 Docker 和 Kubernetes 相关的认证，包括有 DCA、CKAD、CKA 和 CKS。准备这些考试的动机，是因为我在工作中有接触到，并且想更进一步了解和掌握它们。 如今呢，我们已经习惯了通过云为客户提供服务，但在具体地说到云之前，请大家稍微等等，我来给大家讲述一段经历。 让时间来到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Technology Academy 我在云上等你">
+<meta property="og:url" content="https://csongyu.github.io/posts/41b5d4ef.html">
+<meta property="og:site_name" content="日拱一卒">
+<meta property="og:description" content="大家好，我是来自 GPB&amp;W 的 Song Yu，很高兴参加本次云主题分享会。 我在去年通过了 Docker 和 Kubernetes 相关的认证，包括有 DCA、CKAD、CKA 和 CKS。准备这些考试的动机，是因为我在工作中有接触到，并且想更进一步了解和掌握它们。 如今呢，我们已经习惯了通过云为客户提供服务，但在具体地说到云之前，请大家稍微等等，我来给大家讲述一段经历。 让时间来到">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-17T17:14:11.615Z">
+<meta property="article:author" content="Song Yu Chen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://csongyu.github.io/posts/41b5d4ef.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Technology Academy 我在云上等你 | 日拱一卒</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日拱一卒</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://csongyu.github.io/posts/41b5d4ef.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Song Yu Chen">
+      <meta itemprop="description" content="日拱一卒，不期速成；道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日拱一卒">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Technology Academy 我在云上等你
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-16T00:00:00+08:00">2023-07-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>大家好，我是来自 GPB&amp;W 的 Song
+Yu，很高兴参加本次云主题分享会。</p>
+<p>我在去年通过了 Docker 和 Kubernetes 相关的认证，包括有 DCA、CKAD、CKA
+和
+CKS。准备这些考试的动机，是因为我在工作中有接触到，并且想更进一步了解和掌握它们。</p>
+<p>如今呢，我们已经习惯了通过云为客户提供服务，但在具体地说到云之前，请大家稍微等等，我来给大家讲述一段经历。</p>
+<p>让时间来到 5 年前的一个夜晚，大约 23 点 40
+分，同事们陆续来到办公室，一边做部署前的准备工作，一边开玩笑道：“希望今晚一切顺利"。</p>
+<p>零点，发布准时开始。但是不太走运，仅过了 10
+分钟就遇到了错误，重试也无法解决。于是，你在提交了一个 ticket
+后便开始等待。</p>
+<p>这个 ticket 辗转了 2
+个团队，问题终于得到解决。当你完成了发布计划时，时间已经来到了凌晨 2
+点至 3 点。这段经历对于开发同事来说并不陌生。</p>
+<p>好了，把时间拉回到现在，拥有 Mode2 牌照的团队，不仅不再受 maintence
+window 的限制，而且可以把当天的改动即时发布到生产环境中去。</p>
+<p>促成如此显著进步的因素有很多，云发挥了重要作用。</p>
+<p>（下一页）</p>
+<p>云版图非常庞大，屏幕上只显示了几块拼图。这些拼图解决了什么问题，来帮助我们取得显著进步呢？</p>
+<p>（下一页）</p>
+<p>第一，云计算</p>
+<p>云计算平台提供了物理硬件资源，这些组织承诺其基础设施具有高可用性和可靠性。</p>
+<p>第二，微服务</p>
+<p>云计算解决了物理硬件问题，但开发和部署中的问题仍未解决。这包括有：</p>
+<p>1、构建时间长。只是修改了一行代码，就需要部署整个应用。同时，部署整个应用所消耗的时间非常多。</p>
+<p>2、开发速度慢。使用一个庞大的代码库，会导致某个开发人员在提交了编译失败的代码后，阻止其他开发人员的构建和部署。</p>
+<p>3、抵御失败的能力差。某个业务模块的致命错误可能导致整个应用的崩溃。</p>
+<p>4、资源利用率低。当某个业务模块的负载增加时，必须水平扩展整个应用，来将负载进行均衡，但这也导致了系统资源的浪费。</p>
+<p>不知道大家是不是也曾经为这些问题而烦恼和痛苦。</p>
+<p>微服务架构通过满足以下要求，解决了上面提到的问题，可谓是对症下药：1、根据业务模块划分服务种类；2、每个服务可独立部署且相互隔离；3、通过轻量级
+API 调用服务；4、服务需保证良好的高可用性。</p>
+<p>第三，容器化</p>
+<p>微服务架构帮助开发团队快速构建和部署服务，各项服务在工作（和出现故障）时不会相互影响，并让持续集成和持续交付（CI/CD）更加顺畅。但是，一个经典的错误场景仍然存在：程序在我这跑得好好的，在你那怎么就不行呢？</p>
+<p>Docker
+镜像解决了微服务的运行环境难以在本地环境、测试环境以及生产环境保持一致的难题。如此一来，开发人员就可以把在本地环境中测试通过的代码，以及所有的依赖打包成一个镜像，然后自动部署在测试环境中进行测试，测试通过后再发布到生产环境中去，这很厉害，打通了整个开发、测试和发布流程。</p>
+<p>第四，容器编排</p>
+<p>Docker
+解决了微服务运行环境的一致性问题，但它无法根据需求自动扩展容器（可扩展性），并且无法自动跨多个节点分发容器（高可用性）。因此，容器编排系统的需求就诞生了。</p>
+<p>Kubernetes 帮助我们：</p>
+<p>1、运行任何规模的容器化应用，且无需任何停机。</p>
+<p>2、自动修复容器化应用，使其能够应对意外故障。</p>
+<p>3、根据工作负载自动扩展容器化应用，并确保云资源的最佳利用。</p>
+<p>4、极大地简化了部署操作过程。无论操作多么复杂，最多只需执行几条命令就可以可靠地执行。</p>
+<p>（下一页）</p>
+<p>好了，在粗略地浏览完如何从这些拼图中受益，并帮助我们取得显著进步后，我想大家会更愿意了解和学习它们了。那我们该如何开始呢？以考促学可能是一个不错的选项。这里要做一个巨大的宣传，时刻关注
+TA 发出的邮件，全是你想要的干货。</p>
+<p>CKAD 和 CKA 是和 Kubernetes 相关的两个认证，通过参加 TA
+提供的技术培训课程，可以帮助我们快速入门
+Kubernetes，并顺利通过考试。</p>
+<p>这里拿出两道试题，来看看考试难度，同时，这两道题也和我们的工作息息相关。一个小提示，在考试中可以查看官方文档。</p>
+<p>（自主发挥）</p>
+<p>最后，谢谢大家的宝贵时间，我的分享到此结束。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/2f289149.html" rel="prev" title="RHCE (EX294) - 配置 cron 作业（增加）">
+      <i class="fa fa-chevron-left"></i> RHCE (EX294) - 配置 cron 作业（增加）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3d95e893.html" rel="next" title="白话机器学习的数学——回归——作为一次函数实现">
+      白话机器学习的数学——回归——作为一次函数实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song Yu Chen"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Song Yu Chen</p>
+  <div class="site-description" itemprop="description">日拱一卒，不期速成；道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/csongyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;csongyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song Yu Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
